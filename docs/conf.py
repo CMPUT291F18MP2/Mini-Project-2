@@ -9,9 +9,9 @@
 
 # -- Project information -----------------------------------------------------
 
-copyright = '2018, Nathan Klapstein'
-author = 'Nathan Klapstein, Ryan Furrer, Thomas Lorincz'
-project = "mini-project-1"
+copyright = '2018, Ryan Furrer'
+author = 'Ryan Furrer, Tim Tran'
+project = "mini-project-2"
 version = "0.0"
 release = "0.0.0"
 
@@ -72,7 +72,7 @@ html_theme_options = {
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'mini_project_1doc'
+htmlhelp_basename = 'mini_project_2doc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -99,7 +99,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'mini_project_1.tex', 'mini-project-1 Documentation',
+    (master_doc, 'mini_project_2.tex', 'mini-project-2 Documentation',
      author, 'manual'),
 ]
 
@@ -109,7 +109,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'mini-project-1', 'mini-project-1 Documentation', [author], 1)
+    (master_doc, 'mini-project-2', 'mini-project-3 Documentation', [author], 1)
 ]
 
 
@@ -119,8 +119,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'mini-project-1', 'mini-project-1 Documentation',
-     author, 'mini_project_1', "CMPUT291PROJECTF18 mini project 1",
+    (master_doc, 'mini-project-2', 'mini-project-2 Documentation',
+     author, 'mini_project_2', "CMPUT291F18MP2 mini project 2",
      'Miscellaneous'),
 ]
 
