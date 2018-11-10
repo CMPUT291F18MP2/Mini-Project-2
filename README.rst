@@ -1,5 +1,5 @@
 ##############
-mini-project-1
+mini-project-2
 ##############
 
 .. image:: https://travis-ci.com/CMPUT291F18MP2/Mini-Project-2.svg?branch=master
@@ -20,41 +20,34 @@ Requirements
 Overview
 ========
 
-mini-project-1 is a simple command line interface (CLI) tool for interacting
-with a database service that provide information similar to popular ride
-sharing applications.
+...
 
 
 Installation
 ============
 
-mini-project-1 can be installed from source by running:
+mini-project-2 can be installed from source by running:
 
 .. code-block:: bash
 
     pip install .
 
-Within the same directory as mini-project-1's ``setup.py`` file.
+Within the same directory as mini-project-2's ``setup.py`` file.
 
 
 Usage
 =====
 
-After installing mini-project-1's shell can be started by the following console
+After installing mini-project-2's shell can be started by the following console
 command:
 
 .. code-block:: bash
 
-    mini-project-1 -i example.db -v
+    mini-project-2 TODO
 
-
-This will create an initial mini-project-1 database named ``example.db`` at
-your current directory and will immediately give you a prompt to login to
-such database.
-
-To get additional usage help on starting mini-project-1 run the following
+To get additional usage help on starting mini-project-2 run the following
 console command:
 
 .. code-block:: bash
 
-    mini-project-1 --help
+    mini-project-2 --help
