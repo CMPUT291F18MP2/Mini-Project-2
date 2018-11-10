@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""pytests interacting with databases for mini-project-1"""
+"""pytests interacting with databases for mini-project-2"""
 
 import sqlite3
 import pytest

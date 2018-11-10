@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""command shell for mini-project-1"""
+"""command shell for mini-project-2"""
 
 import cmd
 import sqlite3
@@ -24,17 +24,17 @@ def logged_in(f):
 
 
 class MiniProjectShell(cmd.Cmd):
-    """Main shell for mini-project-1"""
+    """Main shell for mini-project-2"""
     intro = \
         "Welcome to mini-project-2 shell. Type help or ? to list commands\n"
     prompt = "mini-project-2>"
 
     def __init__(self, database: sqlite3.Connection,
                  register_start: bool = False):
-        """Initialize the mini-project-1 shell
+        """Initialize the mini-project-2 shell
 
         :param database: :class:`sqlite3.Connection` to the database to
-        interact with the mini-project-1 shell
+        interact with the mini-project-2 shell
         """
         super().__init__()
         self.database = database
@@ -50,11 +50,10 @@ class MiniProjectShell(cmd.Cmd):
 
     @logged_in
     def do_logout(self, arg):
-        """Logout from the mini-project-1 database"""
+        """Logout from the mini-project-2 database"""
         parser = get_logout_parser()
         try:
             parser.parse_args(arg.split())
-            self.logout()
         except ShellArgumentException:
             __log__.exception("invalid logout arguement")
 
@@ -64,7 +63,7 @@ class MiniProjectShell(cmd.Cmd):
         get_logout_parser().print_help()
 
     def do_exit(self, arg):
-        """Logout (if needed) and exit out of the mini-project-1 shell"""
-        __log__.info("exiting mini-project-1 shell")
+        """Logout (if needed) and exit out of the mini-project-2 shell"""
+        __log__.info("exiting mini-project-2 shell")
         self.database.close()
         return True

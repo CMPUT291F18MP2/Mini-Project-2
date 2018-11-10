@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""argparse and entry point script for mini-project-1"""
+"""argparse and entry point script for mini-project-2"""
 
 import argparse
 import os
@@ -36,7 +36,7 @@ DATABASE_DATA_CREATE = os.path.join(DATABASE_DIR, "create_data.sql")
 
 
 def init_db(filename: str):
-    """Create a example database for mini-project-1"""
+    """Create a example database for mini-project-2"""
     database = sqlite3.connect(filename)
     cursor = database.cursor()
     # Create the tables
@@ -48,26 +48,26 @@ def init_db(filename: str):
 
 
 def get_parser() -> argparse.ArgumentParser:
-    """Create and return the argparser for mini-project-1"""
+    """Create and return the argparser for mini-project-2"""
     parser = argparse.ArgumentParser(
-        description="Start the mini-project-1 shell"
+        description="Start the mini-project-2 shell"
     )
 
     parser.add_argument("-r", "--register", dest="register",
                         action="store_true",
                         help="Before reaching the login screen access the "
                              "registration screen to register a new member "
-                             "to the mini-project-1 database")
+                             "to the mini-project-2 database")
 
     group = parser.add_argument_group(title="Database")
     group = group.add_mutually_exclusive_group(required=True)
     group.add_argument("-d", "--database",
                        help="Path to an existing SQLITE database file "
-                            "or mini-project-1 to connect to")
+                            "or mini-project-2 to connect to")
     group.add_argument("-i", "--init-database",
                        dest="init_database",
                        help="Create a example SQLITE database file "
-                            "for mini-project-1 at the path specified "
+                            "for mini-project-2 at the path specified "
                             "and connect to it")
 
     group = parser.add_argument_group(title="Logging")
@@ -83,7 +83,7 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def main(argv=sys.argv[1:]) -> int:
-    """main entry point mini-project-1"""
+    """main entry point mini-project-2"""
     parser = get_parser()
     args = parser.parse_args(argv)
 
@@ -112,16 +112,16 @@ def main(argv=sys.argv[1:]) -> int:
 
     # if specified initialize a example database
     if args.init_database:
-        __log__.info("creating example mini-project-1 "
+        __log__.info("creating example mini-project-2 "
                      "database at: {}".format(args.init_database))
         init_db(args.init_database)
 
     # establish a connection to the database
-    __log__.info("connecting to mini-project-1 "
+    __log__.info("connecting to mini-project-2 "
                  "database at: {}".format(args.database or args.init_database))
     conn = sqlite3.connect(args.database or args.init_database)
 
-    __log__.info("starting mini-project-1 shell")
+    __log__.info("starting mini-project-2 shell")
     MiniProjectShell(conn, register_start=args.register).cmdloop()
 
     return 0
