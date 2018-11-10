@@ -1,0 +1,33 @@
+# ..travis.yml
+dist: trusty
+
+sudo: required
+
+language: python
+python: 3.6
+
+before_install:
+  - pip install --upgrade pip
+
+install:
+  - pip install .["docs","tests"]
+
+stages:
+  - test
+  - deploy
+
+jobs:
+  include:
+    - stage: test
+      script:
+      - python setup.py test
+      name: "test"
+    - script:
+      - python setup.py lint || exit $(($? & 35))
+      name: "lint"
+    - script:
+      - python setup.py sdist
+      name: "build"
+    - script:
+      - sphinx-build docs/ build/
+      name: "docs"
