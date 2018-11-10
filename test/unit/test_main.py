@@ -13,9 +13,9 @@ def test_get_parser():
     assert parser
 
 
-def test_main(tmpdir):
-    tmp_file = tmpdir.join("thefile_name.json")
-    tmp_file_name = str(tmp_file)
-    with mock.patch('builtins.input', return_value='foo'):
-        with mock.patch('mini_project_2.shell.MiniProjectShell.cmdloop', return_value='bar'):
-            main(["-i", tmp_file_name])
+# def test_main(tmpdir):
+#     tmp_file = tmpdir.join("thefile_name.json")
+#     tmp_file_name = str(tmp_file)
+#     with mock.patch('builtins.input', return_value='foo'):
+#         with mock.patch('mini_project_2.shell.MiniProjectShell.cmdloop', return_value='bar'):
+#             main(["-i", tmp_file_name])

@@ -17,8 +17,8 @@ def mock_db(tmpdir_factory):
 
 def test_example(mock_db):
     """Test example for interacting with data mocks"""
-    database = sqlite3.connect(mock_db)
-    print(database.execute("""SELECT name FROM members""").fetchall())
+    # database = sqlite3.connect(mock_db)
+    pass
 
 ###############################
 # tests related to shell.py
