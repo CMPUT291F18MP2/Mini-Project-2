@@ -3,7 +3,7 @@ mini-project-2
 ##############
 
 .. image:: https://travis-ci.com/CMPUT291F18MP2/Mini-Project-2.svg?branch=master
-    :target: https://travis-ci.org/CMPUT291F18MP2/Mini-Project-2
+    :target: https://travis-ci.com/CMPUT291F18MP2/Mini-Project-2
     :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/mini-project-2/badge/?version=latest
