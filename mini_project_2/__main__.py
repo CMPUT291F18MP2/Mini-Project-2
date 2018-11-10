@@ -93,7 +93,7 @@ def main(argv=sys.argv[1:]) -> int:
     if args.log_dir:
         os.makedirs(args.log_dir, exist_ok=True)
         file_handler = TimedRotatingFileHandler(
-            os.path.join(args.log_dir, "mini_project_1.log"),
+            os.path.join(args.log_dir, "mini_project_2.log"),
             when="d", interval=1, backupCount=7, encoding="UTF-8",
         )
         file_handler.setFormatter(log_format)
