@@ -42,10 +42,6 @@ class MiniProjectShell(cmd.Cmd):
 
     def cmdloop(self, intro=None):
         # start a login command at start.
-        if self.register_start:
-            self.do_register(None)
-        self.do_login(None)
-        self.do_show_inbox(None)
         super().cmdloop()
 
     # ===============================

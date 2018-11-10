@@ -11,7 +11,7 @@ import logging
 from logging import getLogger, basicConfig, Formatter
 from logging.handlers import TimedRotatingFileHandler
 
-from mini_project_1.shell import MiniProjectShell
+from mini_project_2.shell import MiniProjectShell
 
 __log__ = getLogger(__name__)
 
