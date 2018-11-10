@@ -1,7 +1,6 @@
 miniProject Members:
-    * nklapste - Nathan Klapstein
+    * ttran1 - Tim Tran
     * rfurrer - Ryan Furrer
-    * tlorincz- Thomas Lorincz
 
 Collaborators:
     * Our group did not collaborate with anyone else

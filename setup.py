@@ -21,13 +21,13 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find a valid version")
 
 
-VERSION = find_version("mini_project_1", "__init__.py")
+VERSION = find_version("mini_project_2", "__init__.py")
 
 
 class Pylint(test):
     def run_tests(self):
         from pylint.lint import Run
-        Run(["mini_project_1", "--persistent", "y", "--rcfile", ".pylintrc",
+        Run(["mini_project_2", "--persistent", "y", "--rcfile", ".pylintrc",
              "--output-format", "colorized"])
 
 
@@ -47,20 +47,20 @@ class PyTest(test):
 
 
 setup(
-    name="mini-project-1",
+    name="mini-project-2",
     version=VERSION,
     description="",
     long_description=open("README.rst").read(),
     keywords="cmput291 project university",
-    author="Nathan Klapstein, Ryan Furrer, Thomas Lorincz",
-    author_email="nklapste@ualberta.ca",
-    url="https://github.com/CMPUT291PROJECT1F18/Mini-Project-1",
+    author="Ryan Furrer",
+    author_email="rfurrer@ualberta.ca",
+    url="https://github.com/CMPUT291F18MP2/Mini-Project-2",
     license="MIT License",
     packages=find_packages(),
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "mini-project-1 = mini_project_1.__main__:main"
+            "mini-project-2 = mini_project_2.__main__:main"
         ]
     },
     install_requires=[

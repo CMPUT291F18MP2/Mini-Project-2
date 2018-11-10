@@ -2,12 +2,12 @@
 mini-project-1
 ##############
 
-.. image:: https://travis-ci.org/CMPUT291PROJECT1F18/Mini-Project-1.svg?branch=master
-    :target: https://travis-ci.org/CMPUT291PROJECT1F18/Mini-Project-1
+.. image:: https://travis-ci.com/CMPUT291F18MP2/Mini-Project-2.svg?branch=master
+    :target: https://travis-ci.org/CMPUT291F18MP2/Mini-Project-2
     :alt: Build Status
 
-.. image:: https://readthedocs.org/projects/mini-project-1/badge/?version=latest
-    :target: https://mini-project-1.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/mini-project-2/badge/?version=latest
+    :target: https://mini-project-2.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 
