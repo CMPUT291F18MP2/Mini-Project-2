@@ -3,13 +3,8 @@
 
 """pytests interacting with databases for mini-project-1"""
 
-import os
 import sqlite3
 import pytest
-from mock import mock
-
-
-from unittest import TestCase
 
 
 
