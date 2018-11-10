@@ -3,7 +3,7 @@
 
 """pytests for :mod:`.__main__`"""
 
-from mini_project_1.__main__ import get_parser, main
+from mini_project_2.__main__ import get_parser, main
 
 import mock
 
