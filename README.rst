@@ -9,6 +9,10 @@ mini-project-2
 .. image:: https://readthedocs.org/projects/mini-project-2/badge/?version=latest
     :target: https://mini-project-2.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+    
+.. image:: https://codecov.io/gh/CMPUT291F18MP2/Mini-Project-2/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/CMPUT291F18MP2/Mini-Project-2
+  :alt: CodeCov
 
 
 Requirements
