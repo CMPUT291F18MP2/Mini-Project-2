@@ -39,6 +39,9 @@ stages:
   - test
   - deploy
   
+script:
+  - coverage run setup.py test
+  
 after_success:
   - codecov
 
