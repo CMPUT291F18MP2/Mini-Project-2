@@ -4,7 +4,7 @@ miniProject Members:
 
 Collaborators:
     * Our group did not collaborate with anyone else for the project
-    * Travis setup and readthedocs templates were adapted from Ryan Furrer's mini project 1 and those were made by Nathan Klapstein
+    * Travis(continuous integration checker) setup was adapted from Ryan Furrer's mini project 1 which was made by Nathan Klapstein
 
 Information Sources:
     * Class notes
