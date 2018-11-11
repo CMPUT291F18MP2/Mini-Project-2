@@ -20,43 +20,48 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-
-dist: trusty
-
-sudo: required
-
 language: python
-python: 3.6
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
 
 before_install:
   - pip install codecov
-  - pip install --upgrade pip
+
 
 install:
   - pip install .["docs","tests"]
 
-stages:
-  - test
-  - deploy
-  
+
 script:
-  - coverage run setup.py test
-  
+  - python setup.py test
+
+
 after_success:
   - codecov
 
+
 jobs:
   include:
-    - stage: test
+    - python: pypy3
+    - python: 3.5
+    - python: 3.6
+    - python: 3.7
+      dist: xenial
+    - stage: lint
+      python: 3.6
       script:
-      - python setup.py test
-      name: "test"
-    - script:
-      - python setup.py lint || exit $(($? & 35))
-      name: "lint"
-    - script:
-      - python setup.py sdist
-      name: "build"
-    - script:
-      - sphinx-build docs/ build/
+        - python setup.py lint || exit $(($? & 35))
+    - stage: build
+      python: 3.6
+      script:
+        - python setup.py sdist
+    - stage: deploy
       name: "docs"
+      python: 3.6
+      script:
+        - sphinx-build docs/ build/
