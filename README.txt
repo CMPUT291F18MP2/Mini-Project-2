@@ -3,7 +3,8 @@ miniProject Members:
     * rfurrer - Ryan Furrer
 
 Collaborators:
-    * Our group did not collaborate with anyone else
+    * Our group did not collaborate with anyone else for the project
+    * Travis(continuous integration checker) setup was adapted from Ryan Furrer's mini project 1 which was made by Nathan Klapstein
 
 Information Sources:
     * Class notes

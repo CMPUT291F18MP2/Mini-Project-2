@@ -1,11 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""mini-project-1
-
-mini-project-1 is a simple command line interface (CLI) tool for interacting
-with a database service that provide information similar to popular ride
-sharing applications.
+"""mini-project-2
 
 Scripts:
  + :mod:`.__main__` - argparse entry point
@@ -14,3 +10,4 @@ Modules:
 """
 
 __version__ = (0, 0, 0)
+name = "mini_project_2"
