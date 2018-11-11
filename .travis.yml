@@ -1,7 +1,7 @@
 # ..travis.yml
 #MIT License
 #
-#Copyright (c) 2018 CMPUT291PROJECTF18
+#Copyright (c) 2018 CMPUT291PROJECTF18, CMPUT291F18MP2
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ language: python
 python: 3.6
 
 before_install:
+  - pip install codecov
   - pip install --upgrade pip
 
 install:
@@ -37,6 +38,9 @@ install:
 stages:
   - test
   - deploy
+  
+after_success:
+  - codecov
 
 jobs:
   include:
