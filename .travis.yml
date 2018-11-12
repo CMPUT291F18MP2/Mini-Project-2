@@ -39,7 +39,7 @@ install:
 
 
 script:
-  - py.test --cov=mini_project_2 test/unit/
+  - pytest --cov=mini_project_2 test/unit/
 
 
 after_success:
