@@ -40,7 +40,7 @@ install:
 
 script:
   - codecov run setup.py test
-  # - pytest --cov=mini_project_2 test/unit/
+  - py.test --cov=mini_project_2 test/unit/
 
 after_success:
   - codecov
