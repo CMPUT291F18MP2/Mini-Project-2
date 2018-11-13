@@ -41,6 +41,12 @@ install:
 script:
 #  - python setup.py test
   - py.test --cov-report= --cov=mini_project_2 test/unit/
+  - py.test --cov-report=term --cov=mini_project_2 test/unit/
+  - codecov
+  - py.test --cov-report=html --cov=mini_project_2 test/unit/
+  - codecov
+  - py.test --cov-report=annotate --cov=mini_project_2 test/unit/
+  - py.test --cov-report=xml --cov=mini_project_2 test/unit/
 
 after_success:
   - codecov
