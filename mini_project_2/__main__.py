@@ -6,12 +6,9 @@
 import argparse
 import os
 import sys
-import sqlite3
 import logging
 from logging import getLogger, basicConfig, Formatter
 from logging.handlers import TimedRotatingFileHandler
-
-from mini_project_2.shell import MiniProjectShell
 
 __log__ = getLogger(__name__)
 
@@ -29,46 +26,11 @@ def log_level(log_level_string: str):
     return getattr(logging, log_level_string, logging.INFO)
 
 
-DATABASE_DIR = \
-    os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
-DATABASE_TABLE_CREATE = os.path.join(DATABASE_DIR, "create_tables.sql")
-DATABASE_DATA_CREATE = os.path.join(DATABASE_DIR, "create_data.sql")
-
-
-def init_db(filename: str):
-    """Create a example database for mini-project-2"""
-    database = sqlite3.connect(filename)
-    cursor = database.cursor()
-    # Create the tables
-    cursor.executescript(open(DATABASE_TABLE_CREATE, "r").read())
-    # Insert data
-    cursor.executescript(open(DATABASE_DATA_CREATE, "r").read())
-    # Save (commit) the changes
-    database.commit()
-
-
 def get_parser() -> argparse.ArgumentParser:
     """Create and return the argparser for mini-project-2"""
     parser = argparse.ArgumentParser(
         description="Start the mini-project-2 shell"
     )
-
-    parser.add_argument("-r", "--register", dest="register",
-                        action="store_true",
-                        help="Before reaching the login screen access the "
-                             "registration screen to register a new member "
-                             "to the mini-project-2 database")
-
-    group = parser.add_argument_group(title="Database")
-    group = group.add_mutually_exclusive_group(required=True)
-    group.add_argument("-d", "--database",
-                       help="Path to an existing SQLITE database file "
-                            "or mini-project-2 to connect to")
-    group.add_argument("-i", "--init-database",
-                       dest="init_database",
-                       help="Create a example SQLITE database file "
-                            "for mini-project-2 at the path specified "
-                            "and connect to it")
 
     group = parser.add_argument_group(title="Logging")
     group.add_argument("--log-level", dest="log_level", default="INFO",
@@ -109,20 +71,6 @@ def main(argv=sys.argv[1:]) -> int:
         handlers=handlers_,
         level=args.log_level
     )
-
-    # if specified initialize a example database
-    if args.init_database:
-        __log__.info("creating example mini-project-2 "
-                     "database at: {}".format(args.init_database))
-        init_db(args.init_database)
-
-    # establish a connection to the database
-    __log__.info("connecting to mini-project-2 "
-                 "database at: {}".format(args.database or args.init_database))
-    conn = sqlite3.connect(args.database or args.init_database)
-
-    __log__.info("starting mini-project-2 shell")
-    MiniProjectShell(conn, register_start=args.register).cmdloop()
 
     return 0
 
