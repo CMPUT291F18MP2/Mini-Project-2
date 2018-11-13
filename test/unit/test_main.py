@@ -3,9 +3,7 @@
 
 """pytests for :mod:`.__main__`"""
 
-from mini_project_2.__main__ import get_parser, main
-
-import mock
+from mini_project_2.__main__ import get_parser
 
 
 def test_get_parser():
