@@ -39,8 +39,8 @@ install:
 
 
 script:
-  - python setup.py test
-  - py.test --cov=mini_project_2 test/unit/
+#  - python setup.py test
+  - py.test --cov-report= --cov=mini_project_2 test/unit/
 
 after_success:
   - codecov
