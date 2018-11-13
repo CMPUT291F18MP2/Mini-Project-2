@@ -31,7 +31,7 @@ stages:
 
 before_install:
   - pip install codecov
-  - pip install pytest pytest-cov
+  - pip install pytest-cov
 
 
 install:
@@ -39,7 +39,7 @@ install:
 
 
 script:
-  - python setup.py test
+  - codecov run setup.py test
   # - pytest --cov=mini_project_2 test/unit/
 
 after_success:
