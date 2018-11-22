@@ -15,19 +15,36 @@ def write_ad(aid, line, filename='data/ads.txt'):
         f.write(line)
 
 
-def write_term(root):
+def write_terms(root, filename='data/terms.txt'):
     """"""
-    pass
-
-
-def write_price(root):
-    """"""
-    price = root.find('price')
-    if price and price.text:
-        price = price.text
+    if os.path.exists(filename):
+        mode = 'a'  # append if already exists
     else:
-        price = '0'
-    pass
+        mode = 'w'  # make a new file if not
+    with open(filename, mode) as f:
+        pass
+
+
+def write_price(root, filename='data/prices.txt'):
+    """"""
+    padding_length = 10
+    price = root.find('price')
+    if ET.iselement(price) and price.text:
+        price = price.text.rjust(padding_length)
+    else:
+        price = '0'.rjust(padding_length)
+
+    aid = root.find('aid').text
+    category = root.find('cat').text
+    location = root.find('loc').text
+    price_line = price + ":" + aid + "," + category + "," + location + "\n"
+
+    if os.path.exists(filename):
+        mode = 'a'  # append if already exists
+    else:
+        mode = 'w'  # make a new file if not
+    with open(filename, mode) as f:
+        f.write(price_line)
 
 
 def write_pdate(root):
@@ -48,10 +65,10 @@ def generate_data_files(files=None):
 
         root = ET.fromstring(line)
         aid = root.find('aid').text
-        print(root.find('price'))
-        print(root.find('priced'))
-        
+
         write_ad(aid, line)
+        write_price(root)
+        write_terms(root)
 
     pass
 
