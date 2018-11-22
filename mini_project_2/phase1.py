@@ -1,10 +1,18 @@
 import fileinput
+import os
 import xml.etree.ElementTree as ET
 
 
-def write_ad(root):
+def write_ad(aid, line, filename='data/ads.txt'):
     """"""
-    pass
+    line = aid + ":" + line
+
+    if os.path.exists(filename):
+        mode = 'a'  # append if already exists
+    else:
+        mode = 'w'  # make a new file if not
+    with open(filename, mode) as f:
+        f.write(line)
 
 
 def write_term(root):
@@ -14,6 +22,11 @@ def write_term(root):
 
 def write_price(root):
     """"""
+    price = root.find('price')
+    if price and price.text:
+        price = price.text
+    else:
+        price = '0'
     pass
 
 
@@ -34,12 +47,11 @@ def generate_data_files(files=None):
             continue
 
         root = ET.fromstring(line)
-        print(root.tag)
-        print(root.text)
-        for child in root:
-            print(child.tag)
-            print(child.text)
-        write_ad(root)
+        aid = root.find('aid').text
+        print(root.find('price'))
+        print(root.find('priced'))
+        
+        write_ad(aid, line)
 
     pass
 
