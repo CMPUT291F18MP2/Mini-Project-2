@@ -31,6 +31,8 @@ def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Start the mini-project-2 shell"
     )
+    parser.add_argument("--phase", help="Project part to do.",
+                        type=int)
 
     group = parser.add_argument_group(title="Logging")
     group.add_argument("--log-level", dest="log_level", default="INFO",
@@ -71,6 +73,14 @@ def main(argv=sys.argv[1:]) -> int:
         handlers=handlers_,
         level=args.log_level
     )
+    if args.phase == 1:
+        pass
+    if args.phase == 2:
+        pass
+    if args.phase == 3:
+        pass
+    if args.phase < 1 or args.phase > 3:
+        return 1
 
     return 0
 
