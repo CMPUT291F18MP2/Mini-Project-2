@@ -37,5 +37,5 @@ def test_generate_data_files():  # todo: kinda slow; speed it up somehow?
     generate_data_files(os.path.abspath("../1000TestData/1k.txt"))
     assert open('../1000TestData/1k-ads.txt').read() == open('data/ads.txt').read()
     assert open('../1000TestData/1k-prices.txt').read() == open('data/prices.txt').read()
-    assert open('../1000TestData/1k-pdates.txt').read() == open('data/pdates.txt').read()
     assert open('../1000TestData/1k-terms.txt').read() == open('data/terms.txt').read()
+    assert open('../1000TestData/1k-pdates.txt').read() == open('data/pdates.txt').read()

@@ -95,10 +95,17 @@ def generate_data_files(files=None):
 
         root = ET.fromstring(line)
         aid = root.find('aid').text
-
         write_ad(aid, line)
+
+        remove_pattern = re.compile(r'(&#[0-9]+;)')
+        replace_pattern = re.compile(r'&apos;|&quot;|&amp;')
+        line = re.sub(remove_pattern, '', line)
+        line = re.sub(replace_pattern, ' ', line)
+
+        root = ET.fromstring(line)
         write_price(root)
         write_terms(root)
+        write_pdate(root)
 
     pass
 
