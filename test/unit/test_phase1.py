@@ -10,7 +10,7 @@ small_terms_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-terms.txt
 small_pdates_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-pdates.txt")
 small_prices_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-prices.txt")
 
-med_input_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/10.txt")
+med_input_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k.txt")
 med_ads_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-ads.txt")
 med_terms_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-terms.txt")
 med_pdates_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-pdates.txt")
