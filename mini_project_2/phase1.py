@@ -73,6 +73,19 @@ def is_ad_line(line):
 
 def generate_data_files(files=None):
     """"""
+
+    filename = 'data/ads.txt'
+    with open(filename, 'w') as f:
+        pass
+    filename = 'data/prices.txt'
+    with open(filename, 'w') as f:
+        pass
+    filename = 'data/pdates.txt'
+    with open(filename, 'w') as f:
+        pass
+    filename = 'data/terms.txt'
+    with open(filename, 'w') as f:
+        pass
     for line in fileinput.input(files=files):
         if not is_ad_line(line):
             continue
