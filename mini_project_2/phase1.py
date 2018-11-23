@@ -72,7 +72,16 @@ def write_price(root, filename=prices_file):
 
 def write_pdate(root, filename=pdates_file):
     """"""
-    pass
+    pdate = root.find('date')
+    if ET.iselement(pdate) and pdate.text:
+        aid = root.find('aid').text
+        category = root.find('cat').text
+        location = root.find('loc').text
+        pdate_line = pdate.text + ":" + aid + "," + category + "," + location + "\n"
+
+        mode = 'a'  # append as already exists
+        with open(filename, mode) as f:
+            f.write(pdate_line)
 
 
 def is_ad_line(line):
