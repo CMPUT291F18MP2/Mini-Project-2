@@ -48,20 +48,17 @@ def write_price(root, filename='data/prices.txt'):
     price = root.find('price')
     if ET.iselement(price) and price.text:
         price = price.text.rjust(padding_length)
-    else:
-        price = '0'.rjust(padding_length)
+        aid = root.find('aid').text
+        category = root.find('cat').text
+        location = root.find('loc').text
+        price_line = price + ":" + aid + "," + category + "," + location + "\n"
 
-    aid = root.find('aid').text
-    category = root.find('cat').text
-    location = root.find('loc').text
-    price_line = price + ":" + aid + "," + category + "," + location + "\n"
-
-    if os.path.exists(filename):
-        mode = 'a'  # append if already exists
-    else:
-        mode = 'w'  # make a new file if not
-    with open(filename, mode) as f:
-        f.write(price_line)
+        if os.path.exists(filename):
+            mode = 'a'  # append if already exists
+        else:
+            mode = 'w'  # make a new file if not
+        with open(filename, mode) as f:
+            f.write(price_line)
 
 
 def write_pdate(root):
