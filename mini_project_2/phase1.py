@@ -19,12 +19,11 @@ def write_ad(aid, line, filename='data/ads.txt'):
 def write_terms(root, filename='data/terms.txt'):
     """"""
     # TODO: handle special characters
-    # TODO:  make lowercase
     terms = list()
     pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
     aid = root.find('aid').text
-    title = root.find('ti').text.split(' ')
-    desc = root.find('desc').text.split(' ')
+    title = root.find('ti').text.lower().split(' ')
+    desc = root.find('desc').text.lower().split(' ')
 
     for word in title:
         for match in re.findall(pattern, word):
