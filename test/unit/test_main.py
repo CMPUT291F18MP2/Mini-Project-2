@@ -6,7 +6,7 @@ import argparse
 
 import pytest
 
-from mini_project_2.__main__ import get_parser, log_level
+from mini_project_2.__main__ import get_parser, log_level, main
 
 
 def test_get_parser():
@@ -19,9 +19,9 @@ def test_log_level():
         log_level("test")
 
 
-# def test_main(tmpdir):
-#     tmp_file = tmpdir.join("thefile_name.json")
-#     tmp_file_name = str(tmp_file)
-#     with mock.patch('builtins.input', return_value='foo'):
-#         with mock.patch('mini_project_2.shell.MiniProjectShell.cmdloop', return_value='bar'):
-#             main(["-i", tmp_file_name])
+def test_log_level2():
+    assert log_level('CRITICAL')
+
+
+def test_main():
+    assert main(['--phase', '4', '--log-dir', 'logs', '-v']) == 1

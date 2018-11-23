@@ -31,7 +31,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Start the mini-project-2 shell"
     )
-    parser.add_argument("--phase", help="Project part to do.",
+    parser.add_argument("--phase", help="Project part to do.", required=True,
                         type=int)
 
     group = parser.add_argument_group(title="Logging")
