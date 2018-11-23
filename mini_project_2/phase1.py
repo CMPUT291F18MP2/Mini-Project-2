@@ -3,13 +3,7 @@ import os
 import re
 import xml.etree.ElementTree as ET
 
-import mini_project_2
-
-MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
-ads_file = os.path.join(MINI_PROJECT_2_PATH, "data/ads.txt")
-terms_file = os.path.join(MINI_PROJECT_2_PATH, "data/terms.txt")
-pdates_file = os.path.join(MINI_PROJECT_2_PATH, "data/pdates.txt")
-prices_file = os.path.join(MINI_PROJECT_2_PATH, "data/prices.txt")
+from mini_project_2.common import terms_file, ads_file, prices_file, pdates_file, MINI_PROJECT_2_PATH
 
 
 def write_ad(aid, line, filename=ads_file):

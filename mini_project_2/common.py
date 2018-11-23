@@ -4,11 +4,18 @@
 """common utilities utilized by mini-project-2"""
 
 import argparse
+import os
 import sys
 
-import pendulum
+import mini_project_2
 
 MINI_PROJECT_DATE_FMT = "%Y-%m-%d"
+
+MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
+ads_file = os.path.join(MINI_PROJECT_2_PATH, "data/ads.txt")
+terms_file = os.path.join(MINI_PROJECT_2_PATH, "data/terms.txt")
+pdates_file = os.path.join(MINI_PROJECT_2_PATH, "data/pdates.txt")
+prices_file = os.path.join(MINI_PROJECT_2_PATH, "data/prices.txt")
 
 
 class ShellArgumentException(Exception):
@@ -29,25 +36,3 @@ class ShellArgumentParser(argparse.ArgumentParser):
     def error(self, message):
         self.print_help(sys.stderr)
         raise ShellArgumentException(message)
-
-
-def price(price_string: str) -> int:
-    price = int(price_string)
-    if price < 0:
-        raise argparse.ArgumentTypeError(
-            "invalid price: {} (please choose a non negative price)".format(
-                price_string
-            )
-        )
-    return price
-
-
-def greater_than_zero_number(value: str) -> int:
-    value = int(value)
-    if value <= 0:
-        raise argparse.ArgumentTypeError("%s must be a greater than zero number" % value)
-    return value
-
-
-def date(date_str: str) -> pendulum.DateTime:
-    return pendulum.parse(date_str)
