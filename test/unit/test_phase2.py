@@ -14,11 +14,6 @@ terms_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-terms-sor
 med_input_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k.txt")
 
 
-def test_sort_ads():
-    sort_data(ads_file, ads_file)
-    assert open(ads_sorted_file).read() == open(ads_file).read()
-
-
 def test_sort_all():
     generate_data_files(med_input_file)
     sort_all()
