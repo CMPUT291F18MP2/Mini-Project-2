@@ -1,5 +1,6 @@
 import fileinput
 import os
+import re
 import xml.etree.ElementTree as ET
 
 
@@ -17,12 +18,29 @@ def write_ad(aid, line, filename='data/ads.txt'):
 
 def write_terms(root, filename='data/terms.txt'):
     """"""
+    # TODO: handle special characters
+    # TODO:  make lowercase
+    terms = list()
+    pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
+    aid = root.find('aid').text
+    title = root.find('ti').text.split(' ')
+    desc = root.find('desc').text.split(' ')
+
+    for word in title:
+        for match in re.findall(pattern, word):
+            terms.append(match + ":" + aid + '\n')
+
+    for word in desc:
+        for match in re.findall(pattern, word):
+            terms.append(match + ":" + aid + '\n')
+
     if os.path.exists(filename):
         mode = 'a'  # append if already exists
     else:
         mode = 'w'  # make a new file if not
     with open(filename, mode) as f:
-        pass
+        for term in terms:
+            f.write(term)
 
 
 def write_price(root, filename='data/prices.txt'):
