@@ -8,10 +8,7 @@ def write_ad(aid, line, filename='data/ads.txt'):
     """"""
     line = aid + ":" + line
 
-    if os.path.exists(filename):
-        mode = 'a'  # append if already exists
-    else:
-        mode = 'w'  # make a new file if not
+    mode = 'a'  # append as already exists
     with open(filename, mode) as f:
         f.write(line)
 
@@ -44,10 +41,7 @@ def write_terms(root, filename='data/terms.txt'):
         for match in re.findall(pattern, word):
             terms.append(match + ":" + aid + '\n')
 
-    if os.path.exists(filename):
-        mode = 'a'  # append if already exists
-    else:
-        mode = 'w'  # make a new file if not
+    mode = 'a'  # append as already exists
     with open(filename, mode) as f:
         for term in terms:
             f.write(term)
@@ -85,6 +79,7 @@ def is_ad_line(line):
 def generate_data_files(files=None):
     """"""
 
+    os.makedirs('data', exist_ok=True)
     filename = 'data/ads.txt'
     with open(filename, 'w') as f:
         pass
