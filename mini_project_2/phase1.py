@@ -58,10 +58,7 @@ def write_price(root, filename='data/prices.txt'):
         location = root.find('loc').text
         price_line = price + ":" + aid + "," + category + "," + location + "\n"
 
-        if os.path.exists(filename):
-            mode = 'a'  # append if already exists
-        else:
-            mode = 'w'  # make a new file if not
+        mode = 'a'  # append as already exists
         with open(filename, mode) as f:
             f.write(price_line)
 
