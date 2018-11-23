@@ -36,7 +36,7 @@ class PyTest(test):
 
     def initialize_options(self):
         test.initialize_options(self)
-        self.pytest_args = "-v --cov={}".format("mini_project_1")
+        self.pytest_args = "-v --cov={}".format("mini_project_2")
 
     def run_tests(self):
         import shlex
