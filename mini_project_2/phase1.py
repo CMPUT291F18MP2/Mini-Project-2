@@ -26,15 +26,15 @@ def write_terms(root, filename='data/terms.txt'):
 
     aid = root.find('aid').text
 
-    title = root.find('ti').text.lower()
+    title = root.find('ti').text
     title = re.sub(remove_pattern, '', title)
     title = re.sub(replace_pattern, ' ', title)
-    title = title.split(' ')
+    title = title.lower().split(' ')
 
-    desc = root.find('desc').text.lower()
+    desc = root.find('desc').text
     desc = re.sub(remove_pattern, '', desc)
     desc = re.sub(replace_pattern, ' ', desc)
-    desc = desc.split(' ')
+    desc = desc.lower().split(' ')
 
     for word in title:
         for match in re.findall(pattern, word):
