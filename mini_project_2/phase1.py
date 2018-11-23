@@ -27,12 +27,13 @@ def write_terms(root, filename='data/terms.txt'):
     aid = root.find('aid').text
 
     title = root.find('ti').text.lower()
-    desc = root.find('desc').text.lower()
     title = re.sub(remove_pattern, '', title)
     title = re.sub(replace_pattern, ' ', title)
+    title = title.split(' ')
+
+    desc = root.find('desc').text.lower()
     desc = re.sub(remove_pattern, '', desc)
     desc = re.sub(replace_pattern, ' ', desc)
-    title = title.split(' ')
     desc = desc.split(' ')
     print(desc)
 
