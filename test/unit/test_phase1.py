@@ -1,4 +1,3 @@
-import filecmp
 import os
 
 from mini_project_2.phase1 import is_ad_line, generate_data_files

@@ -21,9 +21,19 @@ def write_terms(root, filename='data/terms.txt'):
     # TODO: replace special characters with space: (&#\d\d\d)|(&quot)|(&apos)|(amp)
     terms = list()
     pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
+    remove_pattern = re.compile(r'&#\\d\\d\\d')
+    replace_pattern = re.compile(r'(&apos)|(&quot)|(&amp)')
+
     aid = root.find('aid').text
-    title = root.find('ti').text.lower().split(' ')
-    desc = root.find('desc').text.lower().split(' ')
+
+    title = root.find('ti').text.lower()
+    desc = root.find('desc').text.lower()
+    re.sub(remove_pattern, '', title)
+    re.sub(replace_pattern, ' ', title)
+    re.sub(remove_pattern, '', desc)
+    re.sub(replace_pattern, ' ', desc)
+    title = title.split(' ')
+    desc = desc.split(' ')
 
     for word in title:
         for match in re.findall(pattern, word):
