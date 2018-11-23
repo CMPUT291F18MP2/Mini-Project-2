@@ -1,14 +1,18 @@
 import os
 import mini_project_2
-from mini_project_2.common import ads_file, prices_file, pdates_file, terms_file
 from mini_project_2.phase2 import sort_data, sort_all
 
 MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
 
-ads_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/sorted/1k-ads-sorted.txt")
-prices_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/sorted/1k-prices-sorted.txt")
-pdates_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/sorted/1k-pdates-sorted.txt")
-terms_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/sorted/1k-terms-sorted.txt")
+ads_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-ads-sorted.txt")
+prices_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-prices-sorted.txt")
+pdates_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-pdates-sorted.txt")
+terms_sorted_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-terms-sorted.txt")
+
+ads_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-ads.txt")
+terms_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-terms.txt")
+pdates_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-pdates.txt")
+prices_file = os.path.join(MINI_PROJECT_2_PATH, "1000TestData/1k-prices.txt")
 
 
 def test_sort_ads():
