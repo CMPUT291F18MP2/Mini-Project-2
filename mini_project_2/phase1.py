@@ -32,6 +32,7 @@ def write_terms(root, filename='data/terms.txt'):
     title = title.split(' ')
 
     desc = root.find('desc').text.lower()
+    print(desc)
     desc = re.sub(remove_pattern, '', desc)
     desc = re.sub(replace_pattern, ' ', desc)
     desc = desc.split(' ')
