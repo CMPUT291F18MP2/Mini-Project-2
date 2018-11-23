@@ -32,11 +32,9 @@ def write_terms(root, filename='data/terms.txt'):
     title = title.split(' ')
 
     desc = root.find('desc').text.lower()
-    print(desc)
     desc = re.sub(remove_pattern, '', desc)
     desc = re.sub(replace_pattern, ' ', desc)
     desc = desc.split(' ')
-    print(desc)
 
     for word in title:
         for match in re.findall(pattern, word):
@@ -57,7 +55,7 @@ def write_terms(root, filename='data/terms.txt'):
 
 def write_price(root, filename='data/prices.txt'):
     """"""
-    padding_length = 10
+    padding_length = 12
     price = root.find('price')
     if ET.iselement(price) and price.text:
         price = price.text.rjust(padding_length)
