@@ -2,3 +2,4 @@ include LICENSE
 include README.rst
 include mini_project_2/smallTestData/*.txt
 include mini_project_2/1000TestData/*.txt
+include mini_project_2/1000TestData/*/*.txt
