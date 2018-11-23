@@ -54,6 +54,7 @@ after_success:
 
 jobs:
   include:
+
     - python: 3.5
       dist: xenial
     - stage: lint

@@ -18,7 +18,7 @@ def write_ad(aid, line, filename='data/ads.txt'):
 
 def write_terms(root, filename='data/terms.txt'):
     """"""
-    # TODO: handle special characters
+    # TODO: replace special characters with space: (&#\d\d\d)|(&quot)|(&apos)|(amp)
     terms = list()
     pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
     aid = root.find('aid').text
