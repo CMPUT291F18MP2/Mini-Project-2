@@ -3,8 +3,16 @@ import os
 import re
 import xml.etree.ElementTree as ET
 
+import mini_project_2
 
-def write_ad(aid, line, filename='data/ads.txt'):
+MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
+ads_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-ads.txt")
+terms_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-terms.txt")
+pdates_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-pdates.txt")
+prices_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-prices.txt")
+
+
+def write_ad(aid, line, filename=ads_file):
     """"""
     line = aid + ":" + line
 
@@ -13,9 +21,8 @@ def write_ad(aid, line, filename='data/ads.txt'):
         f.write(line)
 
 
-def write_terms(root, filename='data/terms.txt'):
+def write_terms(root, filename=terms_file):
     """"""
-    # TODO: replace special characters with space: (&#\d\d\d)|(&quot)|(&apos)|(amp)
     terms = list()
     pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
     remove_pattern = re.compile(r'&#(\\d)+;')
@@ -47,7 +54,7 @@ def write_terms(root, filename='data/terms.txt'):
             f.write(term)
 
 
-def write_price(root, filename='data/prices.txt'):
+def write_price(root, filename=prices_file):
     """"""
     padding_length = 12
     price = root.find('price')
@@ -63,7 +70,7 @@ def write_price(root, filename='data/prices.txt'):
             f.write(price_line)
 
 
-def write_pdate(root):
+def write_pdate(root, filename=pdates_file):
     """"""
     pass
 
@@ -76,18 +83,14 @@ def is_ad_line(line):
 def generate_data_files(files=None):
     """"""
 
-    os.makedirs('data', exist_ok=True)
-    filename = 'data/ads.txt'
-    with open(filename, 'w') as f:
+    os.makedirs(os.path.join(MINI_PROJECT_2_PATH, 'data'), exist_ok=True)
+    with open(ads_file, 'w') as f:
         pass
-    filename = 'data/prices.txt'
-    with open(filename, 'w') as f:
+    with open(prices_file, 'w') as f:
         pass
-    filename = 'data/pdates.txt'
-    with open(filename, 'w') as f:
+    with open(pdates_file, 'w') as f:
         pass
-    filename = 'data/terms.txt'
-    with open(filename, 'w') as f:
+    with open(terms_file, 'w') as f:
         pass
     for line in fileinput.input(files=files):
         if not is_ad_line(line):

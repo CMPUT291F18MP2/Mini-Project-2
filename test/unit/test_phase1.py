@@ -1,14 +1,23 @@
 import os
 
+import mini_project_2
 from mini_project_2.phase1 import is_ad_line, generate_data_files
 
-small_input_file = os.path.abspath("../smallTestData/10.txt")
-small_ads_file = os.path.abspath("../smallTestData/10-ads.txt")
-small_terms_file = os.path.abspath("../smallTestData/10-terms.txt")
-small_pdates_file = os.path.abspath("../smallTestData/10-pdates.txt")
-small_prices_file = os.path.abspath("../smallTestData/10-prices.txt")
+MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
+small_input_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10.txt")
+small_ads_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-ads.txt")
+small_terms_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-terms.txt")
+small_pdates_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-pdates.txt")
+small_prices_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10-prices.txt")
+
+ads_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-ads.txt")
+terms_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-terms.txt")
+pdates_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-pdates.txt")
+prices_file = os.path.join(MINI_PROJECT_2_PATH, "data/10-prices.txt")
+
 
 def test_is_ad_line():
+    print(small_input_file)
     assert is_ad_line("<ad>")
     assert not is_ad_line("<ad")
 
