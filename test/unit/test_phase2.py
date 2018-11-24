@@ -1,6 +1,6 @@
 import os
 import mini_project_2
-from mini_project_2.phase2 import sort_data, sort_all
+from mini_project_2.phase2 import sort_data, sort_all, format_all, db_load_all
 
 MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
 
@@ -25,6 +25,16 @@ def test_sort_all():
     assert open(pdates_sorted_file).read() == open(pdates_file).read()
     assert open(terms_sorted_file).read() == open(terms_file).read()
 
+def test_format_all():
+    format_all()
+    assert True
+
+def test_db_load_all():
+    db_load_all()
+    assert True
+
 if __name__ == "__main__":
     test_sort_all()
+    test_format_all()
+    test_db_load_all()
     pass
