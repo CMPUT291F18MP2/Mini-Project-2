@@ -4,6 +4,8 @@ import mini_project_2
 
 MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
 
+database_path = os.path.join(MINI_PROJECT_2_PATH, "database")
+
 break_pl = os.path.join(MINI_PROJECT_2_PATH, "break.pl")
 
 ads_file = os.path.join(MINI_PROJECT_2_PATH, "data/ads.txt")
@@ -70,8 +72,8 @@ def db_load(infile, outfile, db_type):
                      " -T -t " + db_type + " " + outfile)
 
 def db_load_all():
-    if not os.path.exists("database"):
-        os.makedirs("database")
+    if not os.path.exists(database_path):
+        os.makedirs(database_path)
     db_load(ads_formatted, ads_db, "hash")
     db_load(terms_formatted, terms_db, "btree")
     db_load(pdates_formatted, pdates_db, "btree")
