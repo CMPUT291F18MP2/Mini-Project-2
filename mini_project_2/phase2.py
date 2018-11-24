@@ -1,14 +1,14 @@
 import subprocess
+import os
 
-# command: sort inputfile.txt -u
 from mini_project_2.common import ads_file, terms_file, pdates_file, prices_file
 
 
 def sort_all():
-    sort_data(ads_file, ads_file)
-    sort_data(terms_file, terms_file)
-    sort_data(pdates_file, pdates_file)
-    sort_data(prices_file, prices_file)
+    os.system("sort -u < " + ads_file + " | ./break.pl | db_load -T -t hash ad.idx")
+    os.system("sort -u < " + terms_file + " | ./break.pl | db_load -T -t btree te.idx")
+    os.system("sort -u < " + pdates_file + " | ./break.pl | db_load -T -t btree da.idx")
+    os.system("sort -u < " + prices_file + " | ./break.pl | db_load -T -t btree pr.idx")
 
 
 def sort_data(infile, outfile):
