@@ -68,6 +68,8 @@ def db_load(infile, outfile, db_type):
     # command = ["db_load", "-c", "duplicates=1", "-f", infile,
     #                 "-T", "-t", db_type, outfile]
     # subprocess.run(command)
+    if os.path.exists(outfile):
+        os.remove(outfile)
     os.system("db_load -c duplicates=1 -f " + infile +
                      " -T -t " + db_type + " " + outfile)
 
