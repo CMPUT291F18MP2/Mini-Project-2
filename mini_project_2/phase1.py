@@ -12,32 +12,24 @@ pdates_file = os.path.join(MINI_PROJECT_2_PATH, "data/pdates.txt")
 prices_file = os.path.join(MINI_PROJECT_2_PATH, "data/prices.txt")
 
 
-def write_ad(aid, line, filename=ads_file):
+def write_ad(aid, line, f):
     """"""
     line = aid + ":" + line
 
-    mode = 'a'  # append as already exists
-    with open(filename, mode) as f:
-        f.write(line)
+    f.write(line)
 
 
-def write_terms(root, filename=terms_file):
+def write_terms(root, f):
     """"""
     terms = list()
     pattern = re.compile(r'[0-9a-zA-Z_-]{3,}')
-    remove_pattern = re.compile(r'&#(\\d)+;')
-    replace_pattern = re.compile(r'&apos;|&quot;|&amp;')
 
     aid = root.find('aid').text
 
     title = root.find('ti').text
-    title = re.sub(remove_pattern, '', title)
-    title = re.sub(replace_pattern, ' ', title)
     title = title.lower().split(' ')
 
     desc = root.find('desc').text
-    desc = re.sub(remove_pattern, '', desc)
-    desc = re.sub(replace_pattern, ' ', desc)
     desc = desc.lower().split(' ')
 
     for word in title:
@@ -48,13 +40,11 @@ def write_terms(root, filename=terms_file):
         for match in re.findall(pattern, word):
             terms.append(match + ":" + aid + '\n')
 
-    mode = 'a'  # append as already exists
-    with open(filename, mode) as f:
-        for term in terms:
-            f.write(term)
+    for term in terms:
+        f.write(term)
 
 
-def write_price(root, filename=prices_file):
+def write_price(root, f):
     """"""
     padding_length = 12
     price = root.find('price')
@@ -65,12 +55,10 @@ def write_price(root, filename=prices_file):
         location = root.find('loc').text
         price_line = price + ":" + aid + "," + category + "," + location + "\n"
 
-        mode = 'a'  # append as already exists
-        with open(filename, mode) as f:
-            f.write(price_line)
+        f.write(price_line)
 
 
-def write_pdate(root, filename=pdates_file):
+def write_pdate(root, f):
     """"""
     pdate = root.find('date')
     if ET.iselement(pdate) and pdate.text:
@@ -79,9 +67,7 @@ def write_pdate(root, filename=pdates_file):
         location = root.find('loc').text
         pdate_line = pdate.text + ":" + aid + "," + category + "," + location + "\n"
 
-        mode = 'a'  # append as already exists
-        with open(filename, mode) as f:
-            f.write(pdate_line)
+        f.write(pdate_line)
 
 
 def is_ad_line(line):
@@ -89,35 +75,36 @@ def is_ad_line(line):
     return line.startswith("<ad>")
 
 
+def remove_special_chars(line):
+    """"""
+    remove_pattern = re.compile(r'(&#[0-9]+;)')
+    replace_pattern = re.compile(r'&apos;|&quot;|&amp;')
+    line = re.sub(remove_pattern, '', line)
+    return re.sub(replace_pattern, ' ', line)
+
+
 def generate_data_files(files=None):
     """"""
 
     os.makedirs(os.path.join(MINI_PROJECT_2_PATH, 'data'), exist_ok=True)
-    with open(ads_file, 'w') as f:
-        pass
-    with open(prices_file, 'w') as f:
-        pass
-    with open(pdates_file, 'w') as f:
-        pass
-    with open(terms_file, 'w') as f:
-        pass
-    for line in fileinput.input(files=files):
-        if not is_ad_line(line):
-            continue
+    with open(ads_file, 'w') as f_ads:
+        with open(prices_file, 'w') as f_prices:
+            with open(pdates_file, 'w') as f_pdates:
+                with open(terms_file, 'w') as f_terms:
+                    for line in fileinput.input(files=files):
+                        if not is_ad_line(line):
+                            continue
 
-        root = ET.fromstring(line)
-        aid = root.find('aid').text
-        write_ad(aid, line)
+                        root = ET.fromstring(line)
+                        aid = root.find('aid').text
+                        write_ad(aid, line, f_ads)
 
-        remove_pattern = re.compile(r'(&#[0-9]+;)')
-        replace_pattern = re.compile(r'&apos;|&quot;|&amp;')
-        line = re.sub(remove_pattern, '', line)
-        line = re.sub(replace_pattern, ' ', line)
+                        line = remove_special_chars(line)
 
-        root = ET.fromstring(line)
-        write_price(root)
-        write_terms(root)
-        write_pdate(root)
+                        root = ET.fromstring(line)
+                        write_price(root, f_prices)
+                        write_terms(root, f_terms)
+                        write_pdate(root, f_pdates)
 
     pass
 

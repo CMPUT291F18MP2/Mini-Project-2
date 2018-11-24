@@ -1,7 +1,7 @@
 import os
 
 import mini_project_2
-from mini_project_2.phase1 import is_ad_line, generate_data_files
+from mini_project_2.phase1 import is_ad_line, generate_data_files, remove_special_chars
 
 MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
 small_input_file = os.path.join(MINI_PROJECT_2_PATH, "smallTestData/10.txt")
@@ -25,6 +25,17 @@ terms_file = os.path.join(MINI_PROJECT_2_PATH, "data/terms.txt")
 def test_is_ad_line():
     assert is_ad_line("<ad>")
     assert not is_ad_line("<ad")
+
+
+def test_remove_special_chars():
+    line = "<ad><aid>1003735660</aid><date>2018/11/07</date><loc>Edmonton</loc><cat>art-collectibles" \
+           "</cat><ti>Antique Hummel figurine</ti><desc>-&#034;school girl&#034; #81/2/0 -perfect condition" \
+           " -1960-1972 mark -call lloyd 780-217-9527</desc><price>50</price></ad>"
+    expected_line = "<ad><aid>1003735660</aid><date>2018/11/07</date><loc>Edmonton</loc><cat>art-collectibles" \
+                    "</cat><ti>Antique Hummel figurine</ti><desc>-school girl #81/2/0 -perfect " \
+                    "condition -1960-1972 mark -call lloyd 780-217-9527</desc><price>50</price></ad>"
+    parsed_line = remove_special_chars(line)
+    assert parsed_line == expected_line
 
 
 def test_generate_ads_files():
