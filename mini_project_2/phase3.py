@@ -27,21 +27,33 @@ class AdsDatabase:
     def __enter__(self):
         return self
 
-    def get_matching_prices(self, query):
-        """
-        Gets matching ad ids based on price, ad id, category and location of the ad
-        :param query: InputParser.parse_input() dict
-        :return: set of byte(ad ids)
-        """
-        return set()
-
     def get_matching_terms(self, query):
         """
         Gets matching ad ids based on words in title and/or description
         :param query: InputParser.parse_input() dict
         :return: set of byte(ad ids)
         """
-        return set()
+        results = set()
+        for search in query["keyword"]:
+            search_results = set()
+            results = self.merge_results(results, search_results)
+            if not results:
+                break
+        return results()
+
+    def get_matching_prices(self, query):
+        """
+        Gets matching ad ids based on price, ad id, category and location of the ad
+        :param query: InputParser.parse_input() dict
+        :return: set of byte(ad ids)
+        """
+        results = set()
+        for search in query["price"]:
+            search_results = set()
+            results = self.merge_results(results, search_results)
+            if not results:
+                break
+        return results()
 
     def get_matching_dates(self, query):
         """
@@ -49,7 +61,13 @@ class AdsDatabase:
         :param query: InputParser.parse_input() dict
         :return: set of byte(ad ids)
         """
-        return set()
+        results = set()
+        for search in query["date"]:
+            search_results = set()
+            results = self.merge_results(results, search_results)
+            if not results:
+                break
+        return results()
 
     def print_matching_ads(self, query):
         """
