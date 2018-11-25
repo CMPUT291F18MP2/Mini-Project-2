@@ -23,6 +23,7 @@ terms_db = os.path.join(MINI_PROJECT_2_PATH, "database/te.idx")
 pdates_db = os.path.join(MINI_PROJECT_2_PATH, "database/da.idx")
 prices_db = os.path.join(MINI_PROJECT_2_PATH, "database/pr.idx")
 
+
 # command: sort inputfile.txt -u
 def sort_all():
     sort_data(ads_file, ads_file)
@@ -30,9 +31,11 @@ def sort_all():
     sort_data(pdates_file, pdates_file)
     sort_data(prices_file, prices_file)
 
+
 def sort_data(infile, outfile):
     command = ["sort", "-o", outfile, infile, "-u"]
     subprocess.run(command)
+
 
 def format_data_file(infile, outfile):
     """ Formats a data file into a format that db_load expects.
@@ -50,11 +53,13 @@ def format_data_file(infile, outfile):
     # subprocess.run(command)
     os.system("perl " + break_pl + " < " + infile + " > " + outfile)
 
+
 def format_all():
     format_data_file(ads_file, ads_formatted)
     format_data_file(terms_file, terms_formatted)
     format_data_file(pdates_file, pdates_formatted)
     format_data_file(prices_file, prices_formatted)
+
 
 def db_load(infile, outfile, db_type):
     """ Calls the linux db_load command to load up the database files
@@ -73,6 +78,7 @@ def db_load(infile, outfile, db_type):
     os.system("db_load -c duplicates=1 -f " + infile +
                      " -T -t " + db_type + " " + outfile)
 
+
 def db_load_all():
     if not os.path.exists(database_path):
         os.makedirs(database_path)
@@ -80,6 +86,7 @@ def db_load_all():
     db_load(terms_formatted, terms_db, "btree")
     db_load(pdates_formatted, pdates_db, "btree")
     db_load(prices_formatted, prices_db, "btree")
+
 
 if __name__ == "__main__":
     format_all()
