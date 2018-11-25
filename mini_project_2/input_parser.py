@@ -46,16 +46,13 @@ class InputParser():
         """ Parses the user input and returns a
             dictionary of the requested searches.
         """
-        # search dates and remove from string
-
-        # search prices and remove from string
-
-        # search locations and remove from string
-
-        # search categories and remove from string
-
-        # search terms
-        return None
+        search_dict = dict()
+        requested_query = self.parse_for_date(requested_query, search_dict)
+        requested_query = self.parse_for_price(requested_query, search_dict)
+        requested_query = self.parse_for_location(requested_query, search_dict)
+        requested_query = self.parse_for_category(requested_query, search_dict)
+        requested_query = self.parse_for_keyword(requested_query, search_dict)
+        return search_dict
 
     def parse_for_date(self, input_query, search_dict):
         """ Parses input_query for a date search.
@@ -72,7 +69,7 @@ class InputParser():
         if 'date' in search_dict:
             for item in operator_value_pairs:
                 search_dict['date'].append(item)
-        else:
+        elif operator_value_pairs:
             search_dict['date'] = operator_value_pairs
 
         input_query = re.sub(date_query, '', input_query, flags=re.I)
@@ -93,7 +90,7 @@ class InputParser():
         if 'price' in search_dict:
             for item in operator_value_pairs:
                 search_dict['price'].append(item)
-        else:
+        elif operator_value_pairs:
             search_dict['price'] = operator_value_pairs
 
         # remove prices from the query and return it
@@ -115,7 +112,7 @@ class InputParser():
         if 'location' in search_dict:
             for item in operator_value_pairs:
                 search_dict['location'].append(item)
-        else:
+        elif operator_value_pairs:
             search_dict['location'] = operator_value_pairs
 
         # remove locations from the query and return it
@@ -137,7 +134,7 @@ class InputParser():
         if 'category' in search_dict:
             for item in operator_value_pairs:
                 search_dict['category'].append(item)
-        else:
+        elif operator_value_pairs:
             search_dict['category'] = operator_value_pairs
 
         # remove categorys from the query and return it
@@ -171,7 +168,7 @@ class InputParser():
         if 'keyword' in search_dict:
             for item in operator_value_pairs:
                 search_dict['keyword'].append(item)
-        else:
+        elif operator_value_pairs:
             search_dict['keyword'] = operator_value_pairs
 
         # remove keywords from the original query and return it

@@ -273,6 +273,73 @@ def test_parse_input_1():
     }
     assert searches_actual == searches_expected
 
+def test_parse_input_2():
+    ip = InputParser()
+    query = "camera%"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "keyword": [("%", "camera")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_3():
+    ip = InputParser()
+    query = "date <= 2018/11/05"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "date": [("<=", "2018/11/05")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_4():
+    ip = InputParser()
+    query = "date > 2018/11/05 camera%"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "date": [(">", "2018/11/05")],
+        "keyword": [("%", "camera")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_5():
+    ip = InputParser()
+    query = "price < 20"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "price": [("<", "20")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_6():
+    ip = InputParser()
+    query = "price >= 20 date > 2018/11/05"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "price": [(">=", "20")],
+        "date": [(">", "2018/11/05")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_7():
+    ip = InputParser()
+    query = "location=edmonton date=2018/11/07"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "location": [("=", "edmonton")],
+        "date": [("=", "2018/11/07")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_8():
+    ip = InputParser()
+    query = "cat=art-collectibles camera"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "keyword": [("=", "camera")],
+        "category": [("=", "art-collectibles")]
+    }
+    assert searches_actual == searches_expected
+
 def test_parse_input_9():
     ip = InputParser()
     query = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
@@ -281,5 +348,25 @@ def test_parse_input_9():
         "keyword": [("=", "camera")],
         "date": [(">=", "2018/11/05"), ("<=", "2018/11/07")],
         "price": [(">", "20"), ("<", "40")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_10():
+    ip = InputParser()
+    query = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40 location=white-house obama"
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
+        "keyword": [("=", "camera"), ("=", "obama")],
+        "date": [(">=", "2018/11/05"), ("<=", "2018/11/07")],
+        "price": [(">", "20"), ("<", "40")],
+        "location": [("=", "white-house")]
+    }
+    assert searches_actual == searches_expected
+
+def test_parse_input_11():
+    ip = InputParser()
+    query = "     "
+    searches_actual = ip.parse_input(query)
+    searches_expected = {
     }
     assert searches_actual == searches_expected
