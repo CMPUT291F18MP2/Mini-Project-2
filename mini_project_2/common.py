@@ -3,10 +3,16 @@
 
 """common utilities utilized by mini-project-2"""
 
-import argparse
-import sys
+import os
+
+import mini_project_2
 
 MINI_PROJECT_DATE_FMT = "%Y-%m-%d"
+MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
+AD_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/ad.idx")
+TE_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/te.idx")
+PR_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/pr.idx")
+DA_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/da.idx")
 
 
 class ShellArgumentException(Exception):
