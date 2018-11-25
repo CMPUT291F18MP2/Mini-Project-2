@@ -370,3 +370,21 @@ def test_parse_input_11():
     searches_expected = {
     }
     assert searches_actual == searches_expected
+
+def test_output_type_1():
+    ip = InputParser()
+    user_input = "output=full"
+    val = ip.output_type(user_input)
+    assert val == "full"
+
+def test_output_type_2():
+    ip = InputParser()
+    user_input = "output=brief"
+    val = ip.output_type(user_input)
+    assert val == "brief"
+
+def test_output_type_3():
+    ip = InputParser()
+    user_input = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
+    val = ip.output_type(user_input)
+    assert val == None

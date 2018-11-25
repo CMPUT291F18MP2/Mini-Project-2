@@ -22,6 +22,9 @@ term_query = term + term_suffix + r"|" + term
 expression = r"(" + date_query + r"|" + price_query + r"|" + location_query + r"|" + cat_query + r"|" + term_query + r")"
 query = r"\s*" + expression + r"(\s+" + expression + r")*" + r"\s*"
 
+output_full = r"\s*output=full\s*"
+output_brief = r"\s*output=brief\s*"
+
 class InputParser():
 
     def __init__(self):
@@ -175,3 +178,18 @@ class InputParser():
         for item in keywords:
             input_query = input_query.replace(item, "")
         return input_query
+
+    def output_type(self, user_input):
+        """ Checks if user_input string is either
+            output=full or output=brief.
+            Returns "full", "brief" or if user_input is
+            "output=full", "output=brief", or neither, respectively.
+        """
+        # Add ^ and $ to the pattern to match the whole string.
+        full_pattern = r"^" + output_full + r"$"
+        brief_pattern = r"^" + output_brief + r"$"
+        if re.match(full_pattern, user_input, re.I):
+            return "full"
+        elif re.match(brief_pattern, user_input, re.I):
+            return "brief"
+        return None
