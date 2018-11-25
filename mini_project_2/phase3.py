@@ -20,54 +20,104 @@ class AdsDatabase:
         self.terms_cursor = self.termsDB.cursor()
         self.dates_cursor = self.pdatesDB.cursor()
         self.price_cursor = self.pricesDB.cursor()
+        self.mode = "brief"
 
     def __enter__(self):
         return self
 
     def get_matching_prices(self, query):
+        """
+        Gets matching ad ids based on price, ad id, category and location of the ad
+        :param query:
+        :return: set of byte(ad ids)
+        """
         return set()
 
     def get_matching_terms(self, query):
+        """
+        Gets matching ad ids based on words in title and/or description
+        :param query:
+        :return: set of byte(ad ids)
+        """
         return set()
 
     def get_matching_dates(self, query):
+        """
+        Gets matching ad ids based on date, ad id, category and location of the ad
+        :param query:
+        :return: set of byte(ad ids)
+        """
         return set()
 
+    def print_matching_ads(self, query):
+        """
+        Gets matching ad ids based on category and/or location of the ad and prints them
+        :param query:
+        """
+
+        if self.mode is "full":
+            print(str(None.decode("utf-8")))  # TODO replace none
+        else:
+            print(str(None.decode("utf-8")))
+        pass
+
     @staticmethod
-    def merge_results(*results):
-        """Merges sets with intersection if they have values"""
-        intersection = set()
-        for result in results:
-            if result:
-                if not intersection:
-                    intersection = result
-                else:
-                    intersection = intersection & result
-        return intersection
+    def merge_results(results1, results2):
+        """
+        Merges sets with intersection if they have values otherwise returns the one with values
+        """
+        if not results1:
+            return results2
+        if not results2:
+            return results1
+        return results1 & results2
 
     def execute(self, query):
         """
-        Executes a query
+        Executes a query and prints the results according to mode
         :param query: dict of query conditions
-        :return: results from the query as a set
         """
         results = set()
-        price_results = date_results = term_results = set()
         if "price" in query:
-            price_results = self.get_matching_prices(query)
+            results = self.get_matching_prices(query)
+            if not results:
+                print("No results due to price restrictions")
+                return
+
         if "date" in query:
             date_results = self.get_matching_dates(query)
+            if not date_results:
+                print("No results due to date restrictions")
+                return
+            results = self.merge_results(results, date_results)
+            if not results:
+                print("No results due to intersecting criteria")
+                return
+
         if "keyword" in query:
             term_results = self.get_matching_terms(query)
+            if not term_results:
+                print("No results due to term restrictions")
+                return
+            results = self.merge_results(results, term_results)
+            if not results:
+                print("No results due to intersecting criteria")
+                return
+
         if ("location" in query or "category" in query) and not \
                 ("date" in query or "price" in query or "keyword" in query):
             print("Searching all ads. Queries like this one could be improved by making "
                   "location and category index files. This may take a while...")
-            pass  # Loop through all ads looking for relevant ads
+            self.print_matching_ads(query)  # Loop through all ads looking for relevant ads
+        elif self.mode is "full":
+            self.print_ads_from_aids(results)
+        else:
+            for aid in results:
+                print(str(aid.decode("utf-8")))
 
-        results = self.merge_results(price_results, date_results, term_results)
-
-        return results
+    def print_ads_from_aids(self, results):
+        for aid in results:
+            print(str(self.ads_cursor.get(aid).decode("utf-8")))
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.ads_cursor.close()
