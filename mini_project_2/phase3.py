@@ -141,3 +141,8 @@ def phase3():
             pass
         pass
     pass
+
+
+if __name__ == "__main__":
+    phase3()
+    pass
