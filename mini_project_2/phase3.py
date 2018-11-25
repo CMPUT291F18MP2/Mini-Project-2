@@ -1,8 +1,29 @@
+import datetime
+import operator
 import re
 
 from bsddb3 import db
 
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
+
+operators = {
+    ">": operator.gt,
+    "<": operator.lt,
+    "=": operator.eq,
+    ">=": operator.ge,
+    "<=": operator.le,
+}
+
+
+def parse_date(date):
+    """
+    Converts a date string to a datetime.datetime object
+    """
+    try:
+        year, month, day = date.split("/")
+        return datetime.datetime(year=int(year), month=int(month), day=int(day))
+    except Exception:
+        raise ValueError("{} must follow: 'YYYY/MM/DD'".format(date))
 
 
 class AdsDatabase:
