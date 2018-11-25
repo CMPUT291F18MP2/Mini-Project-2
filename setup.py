@@ -64,7 +64,7 @@ setup(
         ]
     },
     install_requires=[
-        "pendulum>=2.0.4,<3.0.0"
+        "bsddb3",
     ],
     extras_require={
         "docs": [
