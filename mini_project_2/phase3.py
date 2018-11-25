@@ -1,3 +1,5 @@
+import re
+
 from bsddb3 import db
 
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
@@ -28,7 +30,7 @@ class AdsDatabase:
     def get_matching_prices(self, query):
         """
         Gets matching ad ids based on price, ad id, category and location of the ad
-        :param query:
+        :param query: InputParser.parse_input() dict
         :return: set of byte(ad ids)
         """
         return set()
@@ -36,7 +38,7 @@ class AdsDatabase:
     def get_matching_terms(self, query):
         """
         Gets matching ad ids based on words in title and/or description
-        :param query:
+        :param query: InputParser.parse_input() dict
         :return: set of byte(ad ids)
         """
         return set()
@@ -44,7 +46,7 @@ class AdsDatabase:
     def get_matching_dates(self, query):
         """
         Gets matching ad ids based on date, ad id, category and location of the ad
-        :param query:
+        :param query: InputParser.parse_input() dict
         :return: set of byte(ad ids)
         """
         return set()
@@ -52,13 +54,18 @@ class AdsDatabase:
     def print_matching_ads(self, query):
         """
         Gets matching ad ids based on category and/or location of the ad and prints them
-        :param query:
+        :param query: InputParser.parse_input() dict
         """
+        had_a_result = False
+        item = self.ads_cursor.first()
+        while iter:
+            if True:  # TODO check matches
+                had_a_result = True
+                self.print_one_result(item)
+            item = self.ads_cursor.next()
 
-        if self.mode is "full":
-            print(str(None.decode("utf-8")))  # TODO replace none
-        else:
-            print(str(None.decode("utf-8")))
+        if not had_a_result:
+            print("No results")
         pass
 
     @staticmethod
@@ -109,15 +116,32 @@ class AdsDatabase:
             print("Searching all ads. Queries like this one could be improved by making "
                   "location and category index files. This may take a while...")
             self.print_matching_ads(query)  # Loop through all ads looking for relevant ads
-        elif self.mode is "full":
-            self.print_ads_from_aids(results)
         else:
-            for aid in results:
-                print(str(aid.decode("utf-8")))
+            self.print_results(results)
 
-    def print_ads_from_aids(self, results):
+    def print_results(self, results):
+        """
+        Looks in ad.idx for the aids and prints either the whole ads or ad ids and titles based on mode
+        :param results: set of byte(ad ids)
+        """
         for aid in results:
-            print(str(self.ads_cursor.get(aid).decode("utf-8")))
+            line = self.ads_cursor.set(aid)
+            if line:
+                self.print_one_result(line)
+            else:
+                print("Note: btree files have an ad index that's not in ad.inx")
+
+    def print_one_result(self, line):
+        """
+        Looks in ad.idx for the aid and prints either the whole ad or ad id and title based on mode
+        :param line: one line from the ad.idx file
+        """
+        ad = str(line[1].decode("utf-8"))
+        if self.mode is "full":
+            print(ad)
+        else:
+            title = re.search('<ti>(.*)</ti>', ad).group(1)
+            print(str(line[0].decode("utf-8")) + ": " + title)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.ads_cursor.close()
