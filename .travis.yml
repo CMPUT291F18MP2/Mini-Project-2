@@ -32,6 +32,7 @@ stages:
 
 
 before_install:
+  - sudo apt-get install python3-bsddb3
   - pip install codecov
   - pip install pytest-cov
 
