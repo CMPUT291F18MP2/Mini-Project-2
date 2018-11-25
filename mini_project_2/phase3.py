@@ -27,6 +27,14 @@ class AdsDatabase:
     def __enter__(self):
         return self
 
+    def change_mode(self, line):
+        if line.endswith("full"):
+            self.mode = "full"
+        elif line.endswith("brief"):
+            self.mode = "brief"
+        else:
+            print("Invalid mode")
+
     def get_matching_terms(self, query):
         """
         Gets matching ad ids based on words in title and/or description
@@ -175,8 +183,11 @@ class AdsDatabase:
 def phase3():
     with AdsDatabase() as ads_database:
         for line in input("Enter query: "):
+            line = line.lower()
             if InputParser.validate_query(line):
                 ads_database.execute(InputParser.parse_input(line))
+            elif line.startswith("output"):
+                ads_database.change_mode(line)
             else:
                 print("Invalid query")
                 pass
