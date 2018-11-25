@@ -4,7 +4,7 @@ import re
 
 alphanumeric = r"[0-9a-zA-Z_-]"
 numeric = r"[0-9]"
-date = r"[0-9]{4}/[0-9]{2}/[0-9]{2}"
+date = r"([0-9]{4}/[0-9]{2}/[0-9]{2})"
 date_prefix = r"(date)\s*(>=|<=|=|>|<)"
 date_query = date_prefix + r"\s*" + date
 price = numeric + r"+"
@@ -42,8 +42,39 @@ class InputParser():
         else:
             return False
 
-    def parse_input(self, query):
+    def parse_input(self, requested_query):
         """ Parses the user input and returns a
             dictionary of the requested searches.
         """
+        # search dates and remove from string
+
+        # search prices and remove from string
+
+        # search locations and remove from string
+
+        # search categories and remove from string
+
+        # search terms
         return None
+
+    def parse_for_date(self, input_query, search_dict):
+        """ Parses input_query for a date search.
+            Adds any date searches to search_dict.
+            Returns the input_query with dates removed.
+        """
+        operator_value_pairs = list()
+        date_search_patterns = re.findall(date_query, input_query, re.I)
+
+        # date_search_pattern = a list of ("date", operator, value)
+        for item in date_search_patterns:
+            operator_value_pairs.append((item[1], item[2]))
+
+        if 'date' in search_dict:
+            for item in operator_value_pairs:
+                search_dict['date'].append(item)
+        else:
+            search_dict['date'] = operator_value_pairs
+
+        # TODO: remove dates from input query
+        input_query = re.sub(date_query, '', input_query, flags=re.I)
+        return input_query

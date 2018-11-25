@@ -117,6 +117,30 @@ def test_validate_input_19():
     val = ip.validate_query(query)
     assert val == False
 
+def test_parse_for_date_1():
+    ip = InputParser()
+    query = r"camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
+    search_dict = dict()
+    new_query = ip.parse_for_date(query, search_dict)
+    assert search_dict == {"date": [(">=", "2018/11/05"), ("<=", "2018/11/07")]}
+    assert new_query == r"camera   price > 20 price < 40"
+
+def test_parse_for_date_2():
+    ip = InputParser()
+    query = r"date >= 2018/11/05"
+    search_dict = dict()
+    new_query = ip.parse_for_date(query, search_dict)
+    assert search_dict == {"date": [(">=", "2018/11/05")]}
+    assert new_query == r""
+
+def test_parse_for_date_3():
+    ip = InputParser()
+    query = r"camera date=2025/01/01"
+    search_dict = {"date": [(">=", "2018/11/05")]}
+    new_query = ip.parse_for_date(query, search_dict)
+    assert search_dict == {"date": [(">=", "2018/11/05"), ("=", "2025/01/01")]}
+    assert new_query == r"camera "
+
 def test_parse_input_1():
     ip = InputParser()
     query = "camera"
