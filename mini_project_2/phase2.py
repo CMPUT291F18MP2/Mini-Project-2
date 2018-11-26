@@ -26,14 +26,14 @@ prices_db = os.path.join(MINI_PROJECT_2_PATH, "database/pr.idx")
 
 # command: sort inputfile.txt -u
 def sort_all():
-    sort_data(ads_file, ads_file)
-    sort_data(terms_file, terms_file)
-    sort_data(pdates_file, pdates_file)
-    sort_data(prices_file, prices_file)
+    sort_data(ads_file, ads_file, "-u")
+    sort_data(terms_file, terms_file, "-u")
+    sort_data(pdates_file, pdates_file, "-u")
+    sort_data(prices_file, prices_file, "-un")
 
 
-def sort_data(infile, outfile):
-    command = ["sort", "-o", outfile, infile, "-u"]
+def sort_data(infile, outfile, flags):
+    command = ["sort", "-o", outfile, infile, flags]
     subprocess.run(command)
 
 
