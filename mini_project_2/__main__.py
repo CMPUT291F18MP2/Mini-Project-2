@@ -56,7 +56,6 @@ def main(argv=sys.argv[1:]):
     """main entry point mini-project-2"""
     parser = get_parser()
     args = parser.parse_args(argv)
-    print(sys.argv)
     sys.argv = []
 
     # configure logging
