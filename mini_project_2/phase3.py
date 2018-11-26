@@ -12,8 +12,10 @@ operators = {
     "<": operator.lt,
     "=": operator.eq,
     ">=": operator.ge,
-    "<=": operator.le,
+    "<=": operator.le,  # Note: % not included as startswith uses a different call pattern
 }
+
+# TODO: what happens when db_cur does not have the key for get -- assumed returns none - wrong?
 
 
 def parse_date(date):
@@ -114,12 +116,27 @@ class AdsDatabase:
         :return: set of byte(ad ids)
         """
         results = set()
-        for search in query["keyword"]:
-            search_results = set()
+        search_results = set()
+        for op, search in query["keyword"]:
+            self.terms_cursor.set_range(search)
+
+            row = self.terms_cursor.get(search, db.DB_CURRENT)
+
+            while row:
+                if op is '%':
+                    can_add = row[0].decode('utf-8').startswith(search)
+                else:
+                    can_add = row[0].decode('utf-8') == search
+
+                if can_add:
+                    search_results.add(row[1])
+                else:
+                    break
+                row = self.terms_cursor.next()
             results = self.merge_results(results, search_results)
             if not results:
                 break
-        return results()
+        return results
 
     def get_matching_prices(self, query):
         """
@@ -178,9 +195,9 @@ class AdsDatabase:
             flag = db.DB_FIRST
             if lower_bounds_operator is ">":
                 flag = db.DB_LAST
-            row = self.price_cursor.get(lower_bounds, flag)
+            row = self.dates_cursor.get(lower_bounds, flag)
         else:
-            row = self.price_cursor.first()
+            row = self.dates_cursor.first()
 
         while row:
             date, data = row
@@ -204,7 +221,7 @@ class AdsDatabase:
                             break
             if can_add:
                 results.add(aid.encode("utf-8"))
-            row = self.price_cursor.next()
+            row = self.dates_cursor.next()
             can_add = True
 
         return results
@@ -217,24 +234,20 @@ class AdsDatabase:
         had_a_result = False
         item = self.ads_cursor.first()
         while item:
-            if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
-                can_add = True
-                loc = ""  # TODO get loc from ads idx
-                cat = ""  # TODO get cat from ads idx
-                if "location" in query:
-                    for op, location in query["location"]:
-                        if loc is not location:
-                            can_add = False
-                            break
-                if "category" in query and can_add:
-                    for op, category in query["category"]:
-                        if cat is not category:
-                            can_add = False
-                            break
-                if can_add:
-                    had_a_result = True
-                    self.print_one_result(item)
-            else:
+            can_add = True
+            loc = ""  # TODO get loc from ads idx
+            cat = ""  # TODO get cat from ads idx
+            if "location" in query:
+                for op, location in query["location"]:
+                    if loc is not location:
+                        can_add = False
+                        break
+            if "category" in query and can_add:
+                for op, category in query["category"]:
+                    if cat is not category:
+                        can_add = False
+                        break
+            if can_add:
                 had_a_result = True
                 self.print_one_result(item)
             item = self.ads_cursor.next()
