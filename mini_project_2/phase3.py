@@ -26,30 +26,8 @@ def parse_date(date):
         raise ValueError("{} must follow: 'YYYY/MM/DD'".format(date))
 
 
-def parse_date_range(criteria):
-    lower_bounds = None
-    lower_bounds_operator = None
-    upper_bounds = None
-    upper_bounds_operator = None
-    for op, value in criteria:
-        value = parse_date(value)
-        if op in ("=", "<", "<="):
-            if not lower_bounds or lower_bounds > value:
-                lower_bounds = value
-                lower_bounds_operator = op
-            elif lower_bounds is value and op is "<":
-                lower_bounds_operator = op
-        if op in ("=", ">", ">="):
-            if not upper_bounds or upper_bounds < value:
-                upper_bounds = value
-                upper_bounds_operator = op
-            elif upper_bounds is value and op is ">":
-                upper_bounds_operator = op
-    return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
-
-
 def parse_price_range(criteria):
-    """Returns lower and upper bounds as bytes to use as comparisons in Berkeley databases"""
+    """Returns lower and upper bounds as ints to use as comparisons in Berkeley databases"""
     lower_bounds = None
     lower_bounds_operator = None
     upper_bounds = None
@@ -68,10 +46,31 @@ def parse_price_range(criteria):
                 lower_bounds_operator = op
             elif lower_bounds is value and op is ">":
                 lower_bounds_operator = op
-    if lower_bounds:
-        lower_bounds = str(lower_bounds).encode("utf-8")
-    if upper_bounds:
-        upper_bounds = str(upper_bounds).encode("utf-8")
+
+    return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
+
+
+def parse_date_range(criteria):
+    """Returns lower and upper bounds as datetime.datetime objects to use as comparisons in Berkeley databases"""
+    lower_bounds = None
+    lower_bounds_operator = None
+    upper_bounds = None
+    upper_bounds_operator = None
+    for op, value in criteria:
+        value = parse_date(value)
+        if op in ("=", "<", "<="):
+            if not upper_bounds or upper_bounds > value:
+                upper_bounds = value
+                upper_bounds_operator = op
+            elif upper_bounds is value and op is "<":
+                upper_bounds_operator = op
+        if op in ("=", ">", ">="):
+            if not lower_bounds or lower_bounds < value:
+                lower_bounds = value
+                lower_bounds_operator = op
+            elif lower_bounds is value and op is ">":
+                lower_bounds_operator = op
+
     return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
 
 
@@ -143,8 +142,9 @@ class AdsDatabase:
             price = int(price.decode('utf-8'))
             aid, cat, loc = data.decode('utf-8').split(",")
 
-            if not operators[upper_bounds_operator](price, upper_bounds):
-                break
+            if upper_bounds:
+                if not operators[upper_bounds_operator](price, upper_bounds):
+                    break
 
             if "location" in query or "category" in query:
                 if "location" in query:
@@ -171,12 +171,42 @@ class AdsDatabase:
         :return: set of byte(ad ids)
         """
         results = set()
-        for search in query["date"]:
-            search_results = set()
-            results = self.merge_results(results, search_results)
-            if not results:
-                break
-        return results()
+        can_add = True
+        lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_date_range(query["date"])
+        if lower_bounds:
+            flag = db.DB_FIRST
+            if lower_bounds_operator is ">":
+                flag = db.DB_LAST
+            row = self.price_cursor.get(lower_bounds, flag)
+        else:
+            row = self.price_cursor.first()
+
+        while row:
+            date, data = row
+            date = parse_date(date.decode('utf-8'))
+            aid, cat, loc = data.decode('utf-8').split(",")
+
+            if upper_bounds:
+                if not operators[upper_bounds_operator](date, upper_bounds):
+                    break
+
+            if "location" in query or "category" in query:
+                if "location" in query:
+                    for op, location in query["location"]:
+                        if loc is not location:
+                            can_add = False
+                            break
+                if "category" in query and can_add:
+                    for op, category in query["category"]:
+                        if cat is not category:
+                            can_add = False
+                            break
+            if can_add:
+                results.add(aid.encode("utf-8"))
+            row = self.price_cursor.next()
+            can_add = True
+
+        return results
 
     def print_matching_ads(self, query):
         """
@@ -185,8 +215,25 @@ class AdsDatabase:
         """
         had_a_result = False
         item = self.ads_cursor.first()
-        while iter:
-            if True:  # TODO check matches
+        while item:
+            if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
+                can_add = True
+                loc = ""  # TODO get loc from ads idx
+                cat = ""  # TODO get cat from ads idx
+                if "location" in query:
+                    for op, location in query["location"]:
+                        if loc is not location:
+                            can_add = False
+                            break
+                if "category" in query and can_add:
+                    for op, category in query["category"]:
+                        if cat is not category:
+                            can_add = False
+                            break
+                if can_add:
+                    had_a_result = True
+                    self.print_one_result(item)
+            else:
                 had_a_result = True
                 self.print_one_result(item)
             item = self.ads_cursor.next()
@@ -228,7 +275,7 @@ class AdsDatabase:
                 print("No results due to intersecting criteria")
                 return
 
-        if "keyword" in query:  # TODO: cannot filter location or category from terms.idx
+        if "keyword" in query:
             term_results = self.get_matching_terms(query)
             if not term_results:
                 print("No results due to term restrictions")
@@ -244,19 +291,33 @@ class AdsDatabase:
                   "location and category index files. This may take a while...")
             self.print_matching_ads(query)  # Loop through all ads looking for relevant ads
         else:
-            self.print_results(results)
+            self.print_results(results, query)
 
-    def print_results(self, results):
+    def print_results(self, results, query):
         """
         Looks in ad.idx for the aids and prints either the whole ads or ad ids and titles based on mode
+        :param query: InputParser.parse_input() dict
         :param results: set of byte(ad ids)
         """
         for aid in results:
+            can_add = True
             line = self.ads_cursor.set(aid)
-            if line:
+            if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
+                loc = ""  # TODO get loc from ads idx
+                cat = ""  # TODO get cat from ads idx
+                if "location" in query:
+                    for op, location in query["location"]:
+                        if loc is not location:
+                            can_add = False
+                            break
+                if "category" in query and can_add:
+                    for op, category in query["category"]:
+                        if cat is not category:
+                            can_add = False
+                            break
+
+            if line and can_add:
                 self.print_one_result(line)
-            else:
-                print("Note: btree files have an ad index that's not in ad.inx")
 
     def print_one_result(self, line):
         """
