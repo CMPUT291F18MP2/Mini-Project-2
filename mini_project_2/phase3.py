@@ -163,7 +163,7 @@ class AdsDatabase:
         """
         results = set()
         can_add = True
-        if check_multiple_equals():
+        if check_multiple_equals(query["price"]):
             return results
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
         # print(lower_bounds, upper_bounds)
@@ -217,7 +217,7 @@ class AdsDatabase:
         """
         results = set()
         can_add = True
-        if check_multiple_equals():
+        if check_multiple_equals(query["date"]):
             return results
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_date_range(query["date"])
         if lower_bounds:
