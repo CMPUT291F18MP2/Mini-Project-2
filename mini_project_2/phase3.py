@@ -119,14 +119,7 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["keyword"]:
-            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_FIRST)
-            print(row)
-            row = self.terms_cursor.set(search.encode("utf-8"))
-            print(row)
             row = self.terms_cursor.set_range(search.encode("utf-8"))
-            print(row)
-            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_CURRENT)
-            print(row)
 
             while row:
                 print(row)
@@ -155,10 +148,7 @@ class AdsDatabase:
         can_add = True
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
         if lower_bounds:
-            flag = db.DB_FIRST
-            if lower_bounds_operator is ">":
-                flag = db.DB_LAST
-            row = self.price_cursor.get(lower_bounds.encode('utf-8'), flag)
+            row = self.price_cursor.set_range(lower_bounds.encode("utf-8"))
         else:
             row = self.price_cursor.first()
 
@@ -199,10 +189,7 @@ class AdsDatabase:
         can_add = True
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_date_range(query["date"])
         if lower_bounds:
-            flag = db.DB_FIRST
-            if lower_bounds_operator is ">":
-                flag = db.DB_LAST
-            row = self.dates_cursor.get(lower_bounds.encode('utf-8'), flag)
+            row = self.dates_cursor.set_range(lower_bounds.encode("utf-8"))
         else:
             row = self.dates_cursor.first()
 
@@ -324,7 +311,7 @@ class AdsDatabase:
         """
         for aid in results:
             can_add = True
-            line = self.ads_cursor.set(aid)
+            line = self.ads_cursor.set_range(aid)
             aid, ad = line
             ad = ad.decode("utf-8")
             if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
@@ -372,7 +359,7 @@ def phase3(file=None):
     with AdsDatabase() as ads_database:
         input_parser = InputParser()
         for line in fileinput.input(file):
-            line = line.lower()
+            line = line.lower().strip()
             print(line)
             if input_parser.validate_query(line):
                 ads_database.execute(input_parser.parse_input(line))
