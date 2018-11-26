@@ -335,7 +335,7 @@ class AdsDatabase:
                 return
             results = self.merge_results(results, term_results)
             if not results:
-                print("No results due to intersecting criteria terms and (prices and dates)")
+                print("No results due to intersecting criteria terms and (prices and/or dates)")
                 return
 
         if ("location" in query or "category" in query) and not \
