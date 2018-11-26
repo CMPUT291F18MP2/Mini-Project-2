@@ -3,7 +3,7 @@ import fileinput
 import operator
 import re
 
-from bsddb3 import db
+# from bsddb3 import db
 
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
 from mini_project_2.input_parser import InputParser
@@ -148,8 +148,9 @@ class AdsDatabase:
         results = set()
         can_add = True
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
+        print(lower_bounds, upper_bounds)
         if lower_bounds:
-            row = self.price_cursor.set_range(lower_bounds.encode("utf-8")) # TODO this doesn't work. Add lpadding?
+            row = self.price_cursor.set_range(lower_bounds.encode("utf-8"))
         else:
             row = self.price_cursor.first()
 
@@ -287,6 +288,7 @@ class AdsDatabase:
             if not results:
                 print("No results due to price restrictions")
                 return
+            print("Searched prices")
 
         if "date" in query:
             date_results = self.get_matching_dates(query)
@@ -297,6 +299,7 @@ class AdsDatabase:
             if not results:
                 print("No results due to intersecting criteria")
                 return
+            print("Searched dates")
 
         if "keyword" in query:
             term_results = self.get_matching_terms(query)
@@ -307,6 +310,7 @@ class AdsDatabase:
             if not results:
                 print("No results due to intersecting criteria")
                 return
+            print("Searched keywords")
 
         if ("location" in query or "category" in query) and not \
                 ("date" in query or "price" in query or "keyword" in query):
