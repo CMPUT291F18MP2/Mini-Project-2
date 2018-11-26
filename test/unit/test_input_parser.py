@@ -437,4 +437,4 @@ def test_output_type_3():
     ip = InputParser()
     user_input = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
     val = ip.output_type(user_input)
-    assert val
+    assert not val
