@@ -95,12 +95,6 @@ def test_merge_results():
     pass
 
 
-def test_():
-    with AdsDatabase() as ads_database:
-        pass
-    pass
-
-
 def test_print_results():
     with AdsDatabase() as ads_database:
         pass
