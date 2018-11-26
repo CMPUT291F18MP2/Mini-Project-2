@@ -85,7 +85,10 @@ def remove_special_chars(line):
 
 def generate_data_files(files=None):
     """"""
-    print(files)
+    if files:
+        print(files)
+    else:
+        print("Using std_in")
 
     os.makedirs(os.path.join(MINI_PROJECT_2_PATH, 'data'), exist_ok=True)
     with open(ads_file, 'w') as f_ads:
