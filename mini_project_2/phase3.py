@@ -30,21 +30,21 @@ def parse_date(date):
 
 
 def parse_price_range(criteria):
-    """Returns lower and upper bounds as ints to use as comparisons in Berkeley databases"""
+    """Returns lower and upper bounds as strings to use as comparisons in Berkeley databases"""
     lower_bounds = None
     lower_bounds_operator = None
     upper_bounds = None
     upper_bounds_operator = None
-    for op, value in criteria:
-        value = int(value)
+    for op, value_str in criteria:
+        value = int(value_str)
         if op in ("=", "<", "<="):
-            if not upper_bounds or upper_bounds > value:
-                upper_bounds = value
+            if not upper_bounds or int(upper_bounds) > value:
+                upper_bounds = value_str
                 upper_bounds_operator = op
             elif upper_bounds is value and op is "<":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
-            if not lower_bounds or lower_bounds < value:
+            if not lower_bounds or int(lower_bounds) < value:
                 lower_bounds = value
                 lower_bounds_operator = op
             elif lower_bounds is value and op is ">":
@@ -54,22 +54,22 @@ def parse_price_range(criteria):
 
 
 def parse_date_range(criteria):
-    """Returns lower and upper bounds as datetime.datetime objects to use as comparisons in Berkeley databases"""
+    """Returns lower and upper bounds as strings to use as comparisons in Berkeley databases"""
     lower_bounds = None
     lower_bounds_operator = None
     upper_bounds = None
     upper_bounds_operator = None
-    for op, value in criteria:
-        value = parse_date(value)
+    for op, value_str in criteria:
+        value = parse_date(value_str)
         if op in ("=", "<", "<="):
-            if not upper_bounds or upper_bounds > value:
-                upper_bounds = value
+            if not upper_bounds or parse_date(upper_bounds) > value:
+                upper_bounds = value_str
                 upper_bounds_operator = op
             elif upper_bounds is value and op is "<":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
-            if not lower_bounds or lower_bounds < value:
-                lower_bounds = value
+            if not lower_bounds or parse_date(lower_bounds) < value:
+                lower_bounds = value_str
                 lower_bounds_operator = op
             elif lower_bounds is value and op is ">":
                 lower_bounds_operator = op
@@ -118,9 +118,9 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["keyword"]:
-            self.terms_cursor.set_range(search)
+            self.terms_cursor.set_range(search.encode("utf-8"))
 
-            row = self.terms_cursor.get(search, db.DB_CURRENT)
+            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_CURRENT)
 
             while row:
                 if op is '%':
@@ -151,7 +151,7 @@ class AdsDatabase:
             flag = db.DB_FIRST
             if lower_bounds_operator is ">":
                 flag = db.DB_LAST
-            row = self.price_cursor.get(lower_bounds, flag)
+            row = self.price_cursor.get(lower_bounds.encode('utf-8'), flag)
         else:
             row = self.price_cursor.first()
 
@@ -161,7 +161,7 @@ class AdsDatabase:
             aid, cat, loc = data.decode('utf-8').split(",")
 
             if upper_bounds:
-                if not operators[upper_bounds_operator](price, upper_bounds):
+                if not operators[upper_bounds_operator](price, int(upper_bounds)):
                     break
 
             if "location" in query or "category" in query:
@@ -195,7 +195,7 @@ class AdsDatabase:
             flag = db.DB_FIRST
             if lower_bounds_operator is ">":
                 flag = db.DB_LAST
-            row = self.dates_cursor.get(lower_bounds, flag)
+            row = self.dates_cursor.get(lower_bounds.encode('utf-8'), flag)
         else:
             row = self.dates_cursor.first()
 
@@ -205,7 +205,7 @@ class AdsDatabase:
             aid, cat, loc = data.decode('utf-8').split(",")
 
             if upper_bounds:
-                if not operators[upper_bounds_operator](date, upper_bounds):
+                if not operators[upper_bounds_operator](date, parse_date(upper_bounds)):
                     break
 
             if "location" in query or "category" in query:
