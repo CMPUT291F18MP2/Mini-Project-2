@@ -344,10 +344,12 @@ class AdsDatabase:
                             can_add = False
                             break
                 if "category" in query and can_add:
-                    print(cat)
+                    print("|"+cat+"|")
                     for op, category in query["category"]:
-                        print(category)
+                        print("|"+category+"|")
                         print(cat is not category)
+                        print(cat != category)
+                        print(cat == category)
                         if cat is not category:
                             can_add = False
                             break
