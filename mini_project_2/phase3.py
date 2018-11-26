@@ -118,9 +118,7 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["keyword"]:
-            self.terms_cursor.set_range(search.encode("utf-8"))
-
-            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_CURRENT)
+            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_FIRST)
 
             while row:
                 print(row)
