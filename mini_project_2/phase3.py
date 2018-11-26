@@ -1,4 +1,5 @@
 import datetime
+import fileinput
 import operator
 import re
 
@@ -360,10 +361,10 @@ class AdsDatabase:
         self.pricesDB.close()
 
 
-def phase3():
+def phase3(file=None):
     with AdsDatabase() as ads_database:
         input_parser = InputParser()
-        for line in input("Enter query: "):
+        for line in fileinput.input(file):
             line = line.lower()
             print(line)
             if input_parser.validate_query(line):
