@@ -28,13 +28,13 @@ def parse_date(date):
 
 class AdsDatabase:
 
-    adsDB = db.DB()
-    termsDB = db.DB()
-    pdatesDB = db.DB()
-    pricesDB = db.DB()
 
     def __init__(self, ad_filename=AD_INDEX, terms_filename=TE_INDEX,
                  dates_filename=DA_INDEX, prices_filename=PR_INDEX):
+        self.adsDB = db.DB()
+        self.termsDB = db.DB()
+        self.pdatesDB = db.DB()
+        self.pricesDB = db.DB()
         self.adsDB.open(ad_filename, None, db.DB_HASH, db.DB_CREATE)
         self.termsDB.open(terms_filename, None, db.DB_BTREE, db.DB_CREATE)
         self.pdatesDB.open(dates_filename, None, db.DB_BTREE, db.DB_CREATE)
