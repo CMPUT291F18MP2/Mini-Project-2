@@ -347,6 +347,7 @@ class AdsDatabase:
                     print(cat)
                     for op, category in query["category"]:
                         print(category)
+                        print(cat is not category)
                         if cat is not category:
                             can_add = False
                             break
