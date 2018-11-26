@@ -10,6 +10,10 @@ import logging
 from logging import getLogger, basicConfig, Formatter
 from logging.handlers import TimedRotatingFileHandler
 
+from mini_project_2.phase1 import generate_data_files
+from mini_project_2.phase2 import phase2
+from mini_project_2.phase3 import phase3
+
 __log__ = getLogger(__name__)
 
 LOG_LEVEL_STRINGS = ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]
@@ -74,11 +78,11 @@ def main(argv=sys.argv[1:]) -> int:
         level=args.log_level
     )
     if args.phase == 1:
-        pass
+        generate_data_files()
     if args.phase == 2:
-        pass
+        phase2()
     if args.phase == 3:
-        pass
+        phase3()
     if args.phase < 1 or args.phase > 3:
         return 1
 
