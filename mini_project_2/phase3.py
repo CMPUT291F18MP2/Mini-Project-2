@@ -375,6 +375,7 @@ def phase3(file=None):
             line = line.lower().strip()
             print(line)
             if input_parser.validate_query(line):
+                print(input_parser.parse_input(line))
                 ads_database.execute(input_parser.parse_input(line))
             elif line.startswith("output"):
                 ads_database.change_mode(line)
