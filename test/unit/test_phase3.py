@@ -1,4 +1,6 @@
-from mini_project_2.phase3 import AdsDatabase
+import pytest
+
+from mini_project_2.phase3 import AdsDatabase, parse_date
 
 
 def test_execute1():
@@ -48,7 +50,10 @@ def test_phase3():
 
 
 def test_parse_date():
-    pass
+    date = "2018/08/31"
+    assert parse_date(date)
+    with pytest.raises(ValueError):
+        parse_date("2018/30/30")
 
 
 def test_parse_price_range():
