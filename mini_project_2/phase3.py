@@ -123,13 +123,13 @@ class AdsDatabase:
             row = self.terms_cursor.set_range(search.encode("utf-8"))
 
             while row:
-                print(row)
                 if op is '%':
                     can_add = row[0].decode('utf-8').startswith(search)
                 else:
                     can_add = row[0].decode('utf-8') == search
 
                 if can_add:
+                    print(search + " " + row)
                     search_results.add(row[1])
                 else:
                     break
@@ -156,7 +156,6 @@ class AdsDatabase:
         while row:
             price, data = row
             price = int(price.decode('utf-8'))
-            print(price)
             aid, cat, loc = data.decode('utf-8').split(",")
 
             if lower_bounds:
@@ -179,6 +178,7 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
+                print("Price: " + row)
                 results.add(aid.encode("utf-8"))
             row = self.price_cursor.next()
             can_add = True
@@ -224,6 +224,7 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
+                print("Date: " + row)
                 results.add(aid.encode("utf-8"))
             row = self.dates_cursor.next()
             can_add = True
