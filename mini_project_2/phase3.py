@@ -26,6 +26,55 @@ def parse_date(date):
         raise ValueError("{} must follow: 'YYYY/MM/DD'".format(date))
 
 
+def parse_date_range(criteria):
+    lower_bounds = None
+    lower_bounds_operator = None
+    upper_bounds = None
+    upper_bounds_operator = None
+    for op, value in criteria:
+        value = parse_date(value)
+        if op in ("=", "<", "<="):
+            if not lower_bounds or lower_bounds > value:
+                lower_bounds = value
+                lower_bounds_operator = op
+            elif lower_bounds is value and op is "<":
+                lower_bounds_operator = op
+        if op in ("=", ">", ">="):
+            if not upper_bounds or upper_bounds < value:
+                upper_bounds = value
+                upper_bounds_operator = op
+            elif upper_bounds is value and op is ">":
+                upper_bounds_operator = op
+    return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
+
+
+def parse_price_range(criteria):
+    """Returns lower and upper bounds as bytes to use as comparisons in Berkeley databases"""
+    lower_bounds = None
+    lower_bounds_operator = None
+    upper_bounds = None
+    upper_bounds_operator = None
+    for op, value in criteria:
+        value = int(value)
+        if op in ("=", "<", "<="):
+            if not upper_bounds or upper_bounds > value:
+                upper_bounds = value
+                upper_bounds_operator = op
+            elif upper_bounds is value and op is "<":
+                upper_bounds_operator = op
+        if op in ("=", ">", ">="):
+            if not lower_bounds or lower_bounds < value:
+                lower_bounds = value
+                lower_bounds_operator = op
+            elif lower_bounds is value and op is ">":
+                lower_bounds_operator = op
+    if lower_bounds:
+        lower_bounds = str(lower_bounds).encode("utf-8")
+    if upper_bounds:
+        upper_bounds = str(upper_bounds).encode("utf-8")
+    return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
+
+
 class AdsDatabase:
     """Handles queries for ads using 4 Berkeley Database indexes"""
 
@@ -79,12 +128,41 @@ class AdsDatabase:
         :return: set of byte(ad ids)
         """
         results = set()
-        for search in query["price"]:
-            search_results = set()
-            results = self.merge_results(results, search_results)
-            if not results:
+        can_add = True
+        lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
+        if lower_bounds:
+            flag = db.DB_FIRST
+            if lower_bounds_operator is ">":
+                flag = db.DB_LAST
+            row = self.price_cursor.get(lower_bounds, flag)
+        else:
+            row = self.price_cursor.first()
+
+        while row:
+            price, data = row
+            price = int(price.decode('utf-8'))
+            aid, cat, loc = data.decode('utf-8').split(",")
+
+            if not operators[upper_bounds_operator](price, upper_bounds):
                 break
-        return results()
+
+            if "location" in query or "category" in query:
+                if "location" in query:
+                    for op, location in query["location"]:
+                        if loc is not location:
+                            can_add = False
+                            break
+                if "category" in query and can_add:
+                    for op, category in query["category"]:
+                        if cat is not category:
+                            can_add = False
+                            break
+            if can_add:
+                results.add(aid.encode("utf-8"))
+            row = self.price_cursor.next()
+            can_add = True
+
+        return results
 
     def get_matching_dates(self, query):
         """

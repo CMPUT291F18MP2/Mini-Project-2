@@ -9,10 +9,10 @@ import mini_project_2
 
 MINI_PROJECT_DATE_FMT = "%Y-%m-%d"
 MINI_PROJECT_2_PATH = os.path.dirname(os.path.realpath(mini_project_2.__file__))
-AD_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/ad.idx")
-TE_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/te.idx")
-PR_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/pr.idx")
-DA_INDEX = os.path.join(MINI_PROJECT_2_PATH, "data/da.idx")
+AD_INDEX = os.path.join(MINI_PROJECT_2_PATH, "database/ad.idx")
+TE_INDEX = os.path.join(MINI_PROJECT_2_PATH, "database/te.idx")
+PR_INDEX = os.path.join(MINI_PROJECT_2_PATH, "database/pr.idx")
+DA_INDEX = os.path.join(MINI_PROJECT_2_PATH, "database/da.idx")
 
 
 class ShellArgumentException(Exception):
