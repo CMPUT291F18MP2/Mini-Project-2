@@ -226,7 +226,6 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["date"]:
-            search = search.rjust(12)
             print(op)
             print(search)
             if op in ("=", ">", ">="):
