@@ -237,11 +237,11 @@ class AdsDatabase:
             while row:
 
                 date, data = row
-                date = parse_date(date.decode('utf-8'))
+                date = date.decode('utf-8')
                 aid, cat, loc = data.decode('utf-8').split(",")
                 loc = loc.lower()
                 cat = cat.lower()
-                if operators[op](date, parse_date(search)):
+                if operators[op](date, search):
                     can_add = True
                     if "location" in query or "category" in query:
                         if "location" in query:
