@@ -180,6 +180,7 @@ class AdsDatabase:
                 row = self.price_cursor.set_range(search.encode("utf-8"))
             else:
                 row = self.price_cursor.first()
+            print(row)
 
             while row:
 
