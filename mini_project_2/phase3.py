@@ -46,7 +46,7 @@ def parse_price_range(criteria):
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
             if not lower_bounds or int(lower_bounds) < value:
-                lower_bounds = value
+                lower_bounds = value_str
                 lower_bounds_operator = op
             elif lower_bounds is value and op is ">":
                 lower_bounds_operator = op
