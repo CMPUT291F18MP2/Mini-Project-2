@@ -123,6 +123,7 @@ class AdsDatabase:
             row = self.terms_cursor.get(search.encode("utf-8"), db.DB_CURRENT)
 
             while row:
+                print(row)
                 if op is '%':
                     can_add = row[0].decode('utf-8').startswith(search)
                 else:
