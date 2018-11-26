@@ -27,6 +27,16 @@ def check_multiple_equals(criteria):
     return False
 
 
+def check_null_subset(criteria):
+    one = None
+    for op, value_str in criteria:
+        if one and (op == "=" or op == ">" or op == "<") and one != value_str:
+            return True
+        if op == "=":
+            one = value_str
+    return False
+
+
 def parse_date(date):
     """
     Converts a date string to a datetime.datetime object
@@ -162,50 +172,41 @@ class AdsDatabase:
         :return: set of byte(ad ids)
         """
         results = set()
-        can_add = True
-        if check_multiple_equals(query["price"]):
-            return results
-        lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
-        # print(lower_bounds, upper_bounds)
-        if lower_bounds:
-            row = self.price_cursor.set_range(lower_bounds.encode("utf-8"))
-        else:
-            row = self.price_cursor.first()
+        search_results = set()
+        for op, search in query["price"]:
+            if op in ("=", ">", ">="):
+                row = self.price_cursor.set_range(search.encode("utf-8"))
+            else:
+                row = self.price_cursor.first()
 
-        while row:
-            price, data = row
-            price = int(price.decode('utf-8'))
-            aid, cat, loc = data.decode('utf-8').split(",")
-            loc = loc.lower()
-            cat = cat.lower()
+            while row:
 
-            if lower_bounds:
-                if not operators[lower_bounds_operator](price, int(lower_bounds)):
-                    row = self.price_cursor.next()
+                price, data = row
+                price = int(price.decode('utf-8'))
+                aid, cat, loc = data.decode('utf-8').split(",")
+                loc = loc.lower()
+                cat = cat.lower()
+                if operators[op](price, int(search)):
                     can_add = True
-                    continue
-
-            if upper_bounds:
-                if not operators[upper_bounds_operator](price, int(upper_bounds)):
+                    if "location" in query or "category" in query:
+                        if "location" in query:
+                            for op2, location in query["location"]:
+                                if loc != location:
+                                    can_add = False
+                                    break
+                        if "category" in query and can_add:
+                            for op3, category in query["category"]:
+                                if cat != category:
+                                    can_add = False
+                                    break
+                    if can_add:
+                        search_results.add(aid.encode("utf-8"))
+                elif op in ("=", "<", "<="):
                     break
-
-            if "location" in query or "category" in query:
-                if "location" in query:
-                    for op, location in query["location"]:
-                        if loc != location:
-                            can_add = False
-                            break
-                if "category" in query and can_add:
-                    for op, category in query["category"]:
-                        if cat != category:
-                            can_add = False
-                            break
-            if can_add:
-                # print("Price: ")
-                # print(row)
-                results.add(aid.encode("utf-8"))
-            row = self.price_cursor.next()
-            can_add = True
+                row = self.price_cursor.next()
+            results = self.merge_results(results, search_results)
+            if not results:
+                break
 
         return results
 
@@ -216,49 +217,41 @@ class AdsDatabase:
         :return: set of byte(ad ids)
         """
         results = set()
-        can_add = True
-        if check_multiple_equals(query["date"]):
-            return results
-        lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_date_range(query["date"])
-        if lower_bounds:
-            row = self.dates_cursor.set_range(lower_bounds.encode("utf-8"))
-        else:
-            row = self.dates_cursor.first()
+        search_results = set()
+        for op, search in query["date"]:
+            if op in ("=", ">", ">="):
+                row = self.dates_cursor.set_range(search.encode("utf-8"))
+            else:
+                row = self.dates_cursor.first()
 
-        while row:
-            date, data = row
-            date = parse_date(date.decode('utf-8'))
-            aid, cat, loc = data.decode('utf-8').split(",")
-            loc = loc.lower()
-            cat = cat.lower()
+            while row:
 
-            if lower_bounds:
-                if not operators[lower_bounds_operator](date, parse_date(lower_bounds)):
-                    row = self.price_cursor.next()
+                date, data = row
+                date = parse_date(date.decode('utf-8'))
+                aid, cat, loc = data.decode('utf-8').split(",")
+                loc = loc.lower()
+                cat = cat.lower()
+                if operators[op](date, parse_date(search)):
                     can_add = True
-                    continue
-
-            if upper_bounds:
-                if not operators[upper_bounds_operator](date, parse_date(upper_bounds)):
+                    if "location" in query or "category" in query:
+                        if "location" in query:
+                            for op2, location in query["location"]:
+                                if loc != location:
+                                    can_add = False
+                                    break
+                        if "category" in query and can_add:
+                            for op3, category in query["category"]:
+                                if cat != category:
+                                    can_add = False
+                                    break
+                    if can_add:
+                        search_results.add(aid.encode("utf-8"))
+                elif op in ("=", "<", "<="):
                     break
-
-            if "location" in query or "category" in query:
-                if "location" in query:
-                    for op, location in query["location"]:
-                        if loc != location:
-                            can_add = False
-                            break
-                if "category" in query and can_add:
-                    for op, category in query["category"]:
-                        if cat != category:
-                            can_add = False
-                            break
-            if can_add:
-                # print("Date: ")
-                # print(row)
-                results.add(aid.encode("utf-8"))
-            row = self.dates_cursor.next()
-            can_add = True
+                row = self.dates_cursor.next()
+            results = self.merge_results(results, search_results)
+            if not results:
+                break
 
         return results
 
