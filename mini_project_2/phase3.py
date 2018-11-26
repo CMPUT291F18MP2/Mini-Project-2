@@ -121,11 +121,11 @@ class AdsDatabase:
         for op, search in query["keyword"]:
             row = self.terms_cursor.get(search.encode("utf-8"), db.DB_FIRST)
             print(row)
-            row = self.terms_cursor.set(search.encode("utf-8"), db.DB_FIRST)
+            row = self.terms_cursor.set(search.encode("utf-8"))
             print(row)
-            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_LAST)
+            row = self.terms_cursor.set_range(search.encode("utf-8"))
             print(row)
-            row = self.terms_cursor.set(search.encode("utf-8"), db.DB_LAST)
+            row = self.terms_cursor.get(search.encode("utf-8"), db.DB_CURRENT)
             print(row)
 
             while row:
