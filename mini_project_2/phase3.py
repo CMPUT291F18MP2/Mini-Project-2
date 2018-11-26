@@ -157,6 +157,10 @@ class AdsDatabase:
             price = int(price.decode('utf-8'))
             aid, cat, loc = data.decode('utf-8').split(",")
 
+            if lower_bounds:
+                if not operators[lower_bounds_operator](price, int(lower_bounds)):
+                    continue
+
             if upper_bounds:
                 if not operators[upper_bounds_operator](price, int(upper_bounds)):
                     break
@@ -197,6 +201,10 @@ class AdsDatabase:
             date, data = row
             date = parse_date(date.decode('utf-8'))
             aid, cat, loc = data.decode('utf-8').split(",")
+
+            if lower_bounds:
+                if not operators[lower_bounds_operator](date, parse_date(lower_bounds)):
+                    continue
 
             if upper_bounds:
                 if not operators[upper_bounds_operator](date, parse_date(upper_bounds)):
