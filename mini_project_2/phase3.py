@@ -161,6 +161,8 @@ class AdsDatabase:
 
             if lower_bounds:
                 if not operators[lower_bounds_operator](price, int(lower_bounds)):
+                    row = self.price_cursor.next()
+                    can_add = True
                     continue
 
             if upper_bounds:
@@ -208,6 +210,8 @@ class AdsDatabase:
 
             if lower_bounds:
                 if not operators[lower_bounds_operator](date, parse_date(lower_bounds)):
+                    row = self.price_cursor.next()
+                    can_add = True
                     continue
 
             if upper_bounds:
