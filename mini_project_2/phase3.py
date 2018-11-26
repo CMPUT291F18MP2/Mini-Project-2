@@ -3,7 +3,7 @@ import fileinput
 import operator
 import re
 
-# from bsddb3 import db
+from bsddb3 import db
 
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
 from mini_project_2.input_parser import InputParser
