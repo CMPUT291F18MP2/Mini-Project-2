@@ -158,6 +158,8 @@ class AdsDatabase:
             price, data = row
             price = int(price.decode('utf-8'))
             aid, cat, loc = data.decode('utf-8').split(",")
+            loc = loc.lower()
+            cat = cat.lower()
 
             if lower_bounds:
                 if not operators[lower_bounds_operator](price, int(lower_bounds)):
@@ -207,6 +209,8 @@ class AdsDatabase:
             date, data = row
             date = parse_date(date.decode('utf-8'))
             aid, cat, loc = data.decode('utf-8').split(",")
+            loc = loc.lower()
+            cat = cat.lower()
 
             if lower_bounds:
                 if not operators[lower_bounds_operator](date, parse_date(lower_bounds)):
@@ -249,8 +253,8 @@ class AdsDatabase:
             aid, ad = item
             ad = ad.decode("utf-8")
             can_add = True
-            loc = re.search('<loc>(.*)</loc>', ad).group(1)
-            cat = re.search('<cat>(.*)</cat>', ad).group(1)
+            loc = re.search('<loc>(.*)</loc>', ad).group(1).lower()
+            cat = re.search('<cat>(.*)</cat>', ad).group(1).lower()
             if "location" in query:
                 for op, location in query["location"]:
                     if loc != location:
@@ -336,8 +340,8 @@ class AdsDatabase:
             aid, ad = line
             ad = ad.decode("utf-8")
             if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
-                loc = re.search('<loc>(.*)</loc>', ad).group(1)
-                cat = re.search('<cat>(.*)</cat>', ad).group(1)
+                loc = re.search('<loc>(.*)</loc>', ad).group(1).lower()
+                cat = re.search('<cat>(.*)</cat>', ad).group(1).lower()
                 if "location" in query:
                     for op, location in query["location"]:
                         if loc != location:
