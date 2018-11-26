@@ -7,7 +7,7 @@ from bsddb3 import db
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
 
 operators = {
-    ">": operator.gt,
+    ">": operator.gt,  # works like operators[">"](a,b)
     "<": operator.lt,
     "=": operator.eq,
     ">=": operator.ge,
@@ -27,10 +27,11 @@ def parse_date(date):
 
 
 class AdsDatabase:
-
+    """Handles queries for ads using 4 Berkeley Database indexes"""
 
     def __init__(self, ad_filename=AD_INDEX, terms_filename=TE_INDEX,
                  dates_filename=DA_INDEX, prices_filename=PR_INDEX):
+        """Initialize mode, databases, and cursors"""
         self.adsDB = db.DB()
         self.termsDB = db.DB()
         self.pdatesDB = db.DB()
@@ -46,6 +47,7 @@ class AdsDatabase:
         self.mode = "brief"
 
     def __enter__(self):
+        """Allows use of with"""
         return self
 
     def change_mode(self, line):
@@ -148,7 +150,7 @@ class AdsDatabase:
                 print("No results due to intersecting criteria")
                 return
 
-        if "keyword" in query:
+        if "keyword" in query:  # TODO: cannot filter location or category from terms.idx
             term_results = self.get_matching_terms(query)
             if not term_results:
                 print("No results due to term restrictions")
@@ -191,6 +193,7 @@ class AdsDatabase:
             print(str(line[0].decode("utf-8")) + ": " + title)
 
     def __exit__(self, exc_type, exc_value, traceback):
+        """Closes databases and cursors"""
         self.ads_cursor.close()
         self.terms_cursor.close()
         self.dates_cursor.close()
