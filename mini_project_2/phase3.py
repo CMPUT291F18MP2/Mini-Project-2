@@ -129,7 +129,7 @@ class AdsDatabase:
                     can_add = row[0].decode('utf-8') == search
 
                 if can_add:
-                    print(row)
+                    # print(row)
                     search_results.add(row[1])
                 else:
                     break
@@ -148,7 +148,7 @@ class AdsDatabase:
         results = set()
         can_add = True
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
-        print(lower_bounds, upper_bounds)
+        # print(lower_bounds, upper_bounds)
         if lower_bounds:
             row = self.price_cursor.set_range(lower_bounds.encode("utf-8"))
         else:
@@ -183,8 +183,8 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
-                print("Price: ")
-                print(row)
+                # print("Price: ")
+                # print(row)
                 results.add(aid.encode("utf-8"))
             row = self.price_cursor.next()
             can_add = True
@@ -234,8 +234,8 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
-                print("Date: ")
-                print(row)
+                # print("Date: ")
+                # print(row)
                 results.add(aid.encode("utf-8"))
             row = self.dates_cursor.next()
             can_add = True
@@ -296,7 +296,6 @@ class AdsDatabase:
             if not results:
                 print("No results due to price restrictions")
                 return
-            print("Searched prices")
 
         if "date" in query:
             date_results = self.get_matching_dates(query)
@@ -305,9 +304,8 @@ class AdsDatabase:
                 return
             results = self.merge_results(results, date_results)
             if not results:
-                print("No results due to intersecting criteria")
+                print("No results due to intersecting criteria between dates and prices")
                 return
-            print("Searched dates")
 
         if "keyword" in query:
             term_results = self.get_matching_terms(query)
@@ -316,9 +314,8 @@ class AdsDatabase:
                 return
             results = self.merge_results(results, term_results)
             if not results:
-                print("No results due to intersecting criteria")
+                print("No results due to intersecting criteria terms and (prices and dates)")
                 return
-            print("Searched keywords")
 
         if ("location" in query or "category" in query) and not \
                 ("date" in query or "price" in query or "keyword" in query):
@@ -391,9 +388,9 @@ def phase3(file=None):
         input_parser = InputParser()
         for line in fileinput.input(file):
             line = line.lower().strip()
-            print(line)
+            # print(line)
             if input_parser.validate_query(line):
-                print(input_parser.parse_input(line))
+                # print(input_parser.parse_input(line))
                 ads_database.execute(input_parser.parse_input(line))
             elif line.startswith("output"):
                 ads_database.change_mode(line)
