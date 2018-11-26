@@ -181,7 +181,6 @@ class AdsDatabase:
                 row = self.price_cursor.set_range(search.encode("utf-8"))
             else:
                 row = self.price_cursor.first()
-            print(row)
 
             while row:
 
@@ -191,7 +190,6 @@ class AdsDatabase:
                 loc = loc.lower()
                 cat = cat.lower()
                 if operators[op](price, int(search)):
-                    print(row)
                     can_add = True
                     if "location" in query or "category" in query:
                         if "location" in query:
