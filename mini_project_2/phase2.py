@@ -29,7 +29,7 @@ def sort_all():
     sort_data(ads_file, ads_file, "-u")
     sort_data(terms_file, terms_file, "-u")
     sort_data(pdates_file, pdates_file, "-u")
-    sort_data(prices_file, prices_file, "-un")
+    sort_data(prices_file, prices_file, "-n")
 
 
 def sort_data(infile, outfile, flags):
