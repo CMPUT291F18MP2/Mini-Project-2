@@ -22,6 +22,7 @@
 #SOFTWARE.
 language: python
 sudo: required
+dist: trusty
 
 stages:
   - lint
@@ -54,7 +55,6 @@ jobs:
   include:
 
     - python: 3.5
-      dist: xenial
     - stage: lint
       python: 3.5
       script:
