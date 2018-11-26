@@ -129,7 +129,7 @@ class AdsDatabase:
                     can_add = row[0].decode('utf-8') == search
 
                 if can_add:
-                    print(search + " " + row)
+                    print(row)
                     search_results.add(row[1])
                 else:
                     break
@@ -178,7 +178,8 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
-                print("Price: " + row)
+                print("Price: ")
+                print(row)
                 results.add(aid.encode("utf-8"))
             row = self.price_cursor.next()
             can_add = True
@@ -224,7 +225,8 @@ class AdsDatabase:
                             can_add = False
                             break
             if can_add:
-                print("Date: " + row)
+                print("Date: ")
+                print(row)
                 results.add(aid.encode("utf-8"))
             row = self.dates_cursor.next()
             can_add = True
