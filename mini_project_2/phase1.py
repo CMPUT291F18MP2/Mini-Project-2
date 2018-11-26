@@ -27,18 +27,18 @@ def write_terms(root, f):
     aid = root.find('aid').text
 
     title = root.find('ti').text
-    title = title.lower().split(' ')
+    if title:
+        title = title.lower().split(' ')
+        for word in title:
+            for match in re.findall(pattern, word):
+                terms.append(match + ":" + aid + '\n')
 
     desc = root.find('desc').text
-    desc = desc.lower().split(' ')
-
-    for word in title:
-        for match in re.findall(pattern, word):
-            terms.append(match + ":" + aid + '\n')
-
-    for word in desc:
-        for match in re.findall(pattern, word):
-            terms.append(match + ":" + aid + '\n')
+    if desc:
+        desc = desc.lower().split(' ')
+        for word in desc:
+            for match in re.findall(pattern, word):
+                terms.append(match + ":" + aid + '\n')
 
     for term in terms:
         f.write(term)

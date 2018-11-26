@@ -5,3 +5,4 @@ include mini_project_2/1000TestData/*.txt
 include mini_project_2/1000TestData/sorted/*.txt
 include mini_project_2/1000TestData/formatted/*.txt
 include mini_project_2/1000TestData/idx/*.txt
+include mini_project_2/*.pl

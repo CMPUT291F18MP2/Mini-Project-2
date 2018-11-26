@@ -17,7 +17,6 @@ operators = {
 }
 
 
-
 def parse_date(date):
     """
     Converts a date string to a datetime.datetime object
