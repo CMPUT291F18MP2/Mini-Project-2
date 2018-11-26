@@ -210,6 +210,7 @@ class AdsDatabase:
                 row = self.price_cursor.next()
             if not search_results:
                 return set()
+            print(search_results)
             results = self.merge_results(results, search_results)
             search_results = set()
             if not results:
