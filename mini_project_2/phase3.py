@@ -155,6 +155,7 @@ class AdsDatabase:
         while row:
             price, data = row
             price = int(price.decode('utf-8'))
+            print(price)
             aid, cat, loc = data.decode('utf-8').split(",")
 
             if lower_bounds:
