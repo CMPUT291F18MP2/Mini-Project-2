@@ -334,6 +334,8 @@ class AdsDatabase:
         :param query: InputParser.parse_input() dict
         :param results: set of byte(ad ids)
         """
+
+        had_a_result = False
         for aid in results:
             can_add = True
             line = self.ads_cursor.set_range(aid)
@@ -354,7 +356,11 @@ class AdsDatabase:
                             break
 
             if line and can_add:
+                had_a_result = True
                 self.print_one_result(line)
+
+        if not had_a_result:
+            print("No results")
 
     def print_one_result(self, line):
         """
