@@ -187,6 +187,7 @@ class AdsDatabase:
                 loc = loc.lower()
                 cat = cat.lower()
                 if operators[op](price, int(search)):
+                    print(row)
                     can_add = True
                     if "location" in query or "category" in query:
                         if "location" in query:
