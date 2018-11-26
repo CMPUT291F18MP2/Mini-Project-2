@@ -50,13 +50,15 @@ def parse_price_range(criteria):
     for op, value_str in criteria:
         value = int(value_str)
         if op in ("=", "<", "<="):
-            if not upper_bounds or int(upper_bounds) > value:
+            if not upper_bounds or (int(upper_bounds) > value and upper_bounds_operator != "="):
                 upper_bounds = value_str.rjust(num_of_spaces)
                 upper_bounds_operator = op
-            elif upper_bounds is value and op is "<":
+            elif upper_bounds is value and upper_bounds_operator is "<=":
+                upper_bounds_operator = op
+            elif upper_bounds is value and upper_bounds_operator is "<" and op is "=":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
-            if not lower_bounds or int(lower_bounds) < value:
+            if not lower_bounds or (int(lower_bounds) < value and lower_bounds_operator != "="):
                 lower_bounds = value_str.rjust(num_of_spaces)
                 lower_bounds_operator = op
             elif lower_bounds is value and lower_bounds_operator is ">=":
@@ -76,7 +78,7 @@ def parse_date_range(criteria):
     for op, value_str in criteria:
         value = parse_date(value_str)
         if op in ("=", "<", "<="):
-            if not upper_bounds or parse_date(upper_bounds) > value:
+            if not upper_bounds or (parse_date(upper_bounds) > value and upper_bounds_operator != "="):
                 upper_bounds = value_str
                 upper_bounds_operator = op
             elif upper_bounds is value and upper_bounds_operator is "<=":
@@ -84,7 +86,7 @@ def parse_date_range(criteria):
             elif upper_bounds is value and upper_bounds_operator is "<" and op is "=":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
-            if not lower_bounds or parse_date(lower_bounds) < value:
+            if not lower_bounds or (parse_date(lower_bounds) < value and lower_bounds_operator != "="):
                 lower_bounds = value_str
                 lower_bounds_operator = op
             elif lower_bounds is value and lower_bounds_operator is ">=":
