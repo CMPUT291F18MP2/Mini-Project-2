@@ -5,6 +5,7 @@ import re
 from bsddb3 import db
 
 from mini_project_2.common import AD_INDEX, TE_INDEX, PR_INDEX, DA_INDEX
+from mini_project_2.input_parser import InputParser
 
 operators = {
     ">": operator.gt,  # works like operators[">"](a,b)
@@ -345,10 +346,11 @@ class AdsDatabase:
 
 def phase3():
     with AdsDatabase() as ads_database:
+        input_parser = InputParser()
         for line in input("Enter query: "):
             line = line.lower()
-            if InputParser.validate_query(line):
-                ads_database.execute(InputParser.parse_input(line))
+            if input_parser.validate_query(line):
+                ads_database.execute(input_parser.parse_input(line))
             elif line.startswith("output"):
                 ads_database.change_mode(line)
             else:
