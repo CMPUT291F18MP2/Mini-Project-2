@@ -44,7 +44,6 @@ install:
 
 
 script:
-  - py.test --cov-report=html --cov=mini_project_2 test/unit/
   - python setup.py test
 
 after_success:
