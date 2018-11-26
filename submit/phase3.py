@@ -174,6 +174,8 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["price"]:
+            print(op)
+            print(search)
             if op in ("=", ">", ">="):
                 row = self.price_cursor.set_range(search.encode("utf-8"))
             else:
