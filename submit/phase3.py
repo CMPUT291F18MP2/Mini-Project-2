@@ -207,6 +207,7 @@ class AdsDatabase:
                 elif op in ("=", "<", "<="):
                     break
                 row = self.price_cursor.next()
+            print(search_results)
             results = self.merge_results(results, search_results)
             if not results:
                 break
