@@ -174,6 +174,7 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["price"]:
+            search = search.rjust(12)
             print(op)
             print(search)
             if op in ("=", ">", ">="):
