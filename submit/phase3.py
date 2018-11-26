@@ -16,7 +16,6 @@ operators = {
     "<=": operator.le,  # Note: % not included as startswith uses a different call pattern
 }
 
-# TODO: what happens when db_cur does not have the key for get -- assumed returns none - wrong?
 
 
 def parse_date(date):
