@@ -19,7 +19,7 @@ __log__ = getLogger(__name__)
 LOG_LEVEL_STRINGS = ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]
 
 
-def log_level(log_level_string: str):
+def log_level(log_level_string):
     if log_level_string not in LOG_LEVEL_STRINGS:
         raise argparse.ArgumentTypeError(
             "invalid choice: {} (choose from {})".format(
@@ -30,13 +30,15 @@ def log_level(log_level_string: str):
     return getattr(logging, log_level_string, logging.INFO)
 
 
-def get_parser() -> argparse.ArgumentParser:
+def get_parser():
     """Create and return the argparser for mini-project-2"""
     parser = argparse.ArgumentParser(
         description="Start the mini-project-2 shell"
     )
     parser.add_argument("--phase", help="Project part to do.", required=True,
                         type=int)
+    parser.add_argument("-i", dest="input_file", default=None,
+                       type=str, help="Input data file. None -> STD_IN")
 
     group = parser.add_argument_group(title="Logging")
     group.add_argument("--log-level", dest="log_level", default="INFO",
@@ -50,10 +52,12 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv=sys.argv[1:]) -> int:
+def main(argv=sys.argv[1:]):
     """main entry point mini-project-2"""
     parser = get_parser()
     args = parser.parse_args(argv)
+    print(sys.argv)
+    sys.argv = []
 
     # configure logging
     handlers_ = []
@@ -78,7 +82,7 @@ def main(argv=sys.argv[1:]) -> int:
         level=args.log_level
     )
     if args.phase == 1:
-        generate_data_files()
+        generate_data_files(args.input_file)
     if args.phase == 2:
         phase2()
     if args.phase == 3:
