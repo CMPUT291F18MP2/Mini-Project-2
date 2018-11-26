@@ -365,8 +365,8 @@ def phase3():
         input_parser = InputParser()
         for line in input("Enter query: "):
             line = line.lower()
+            print(line)
             if input_parser.validate_query(line):
-                print("how many times am I doing this?")
                 ads_database.execute(input_parser.parse_input(line))
             elif line.startswith("output"):
                 ads_database.change_mode(line)
