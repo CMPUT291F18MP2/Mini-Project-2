@@ -30,6 +30,16 @@ def parse_date(date):
         raise ValueError("{} must follow: 'YYYY/MM/DD'".format(date))
 
 
+def check_multiple_equals(criteria):
+    one = None
+    for op, value_str in criteria:
+        if one and op == "=" and one != value_str:
+            return True
+        if op == "=":
+            one = value_str
+    return False
+
+
 def parse_price_range(criteria):
     """Returns lower and upper bounds as strings to use as comparisons in Berkeley databases"""
     num_of_spaces = 12  # See get_price_matches todo
@@ -49,7 +59,9 @@ def parse_price_range(criteria):
             if not lower_bounds or int(lower_bounds) < value:
                 lower_bounds = value_str.rjust(num_of_spaces)
                 lower_bounds_operator = op
-            elif lower_bounds is value and op is ">":
+            elif lower_bounds is value and lower_bounds_operator is ">=":
+                lower_bounds_operator = op
+            elif lower_bounds is value and lower_bounds_operator is ">" and op is "=":
                 lower_bounds_operator = op
 
     return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
@@ -67,13 +79,17 @@ def parse_date_range(criteria):
             if not upper_bounds or parse_date(upper_bounds) > value:
                 upper_bounds = value_str
                 upper_bounds_operator = op
-            elif upper_bounds is value and op is "<":
+            elif upper_bounds is value and upper_bounds_operator is "<=":
+                upper_bounds_operator = op
+            elif upper_bounds is value and upper_bounds_operator is "<" and op is "=":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
             if not lower_bounds or parse_date(lower_bounds) < value:
                 lower_bounds = value_str
                 lower_bounds_operator = op
-            elif lower_bounds is value and op is ">":
+            elif lower_bounds is value and lower_bounds_operator is ">=":
+                lower_bounds_operator = op
+            elif lower_bounds is value and lower_bounds_operator is ">" and op is "=":
                 lower_bounds_operator = op
 
     return lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds
@@ -147,6 +163,8 @@ class AdsDatabase:
         """
         results = set()
         can_add = True
+        if check_multiple_equals(query["price"]):
+            return results
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
         # print(lower_bounds, upper_bounds)
         if lower_bounds:
@@ -199,6 +217,8 @@ class AdsDatabase:
         """
         results = set()
         can_add = True
+        if check_multiple_equals(query["date"]):
+            return results
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_date_range(query["date"])
         if lower_bounds:
             row = self.dates_cursor.set_range(lower_bounds.encode("utf-8"))
