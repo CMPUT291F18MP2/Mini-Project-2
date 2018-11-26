@@ -234,9 +234,11 @@ class AdsDatabase:
         had_a_result = False
         item = self.ads_cursor.first()
         while item:
+            aid, ad = item
+            ad = ad.decode("utf-8")
             can_add = True
-            loc = ""  # TODO get loc from ads idx
-            cat = ""  # TODO get cat from ads idx
+            loc = re.search('<loc>(.*)</loc>', ad).group(1)
+            cat = re.search('<cat>(.*)</cat>', ad).group(1)
             if "location" in query:
                 for op, location in query["location"]:
                     if loc is not location:
@@ -316,9 +318,11 @@ class AdsDatabase:
         for aid in results:
             can_add = True
             line = self.ads_cursor.set(aid)
+            aid, ad = line
+            ad = ad.decode("utf-8")
             if not ("date" in query or "price" in query) and ("location" in query or "category" in query):
-                loc = ""  # TODO get loc from ads idx
-                cat = ""  # TODO get cat from ads idx
+                loc = re.search('<loc>(.*)</loc>', ad).group(1)
+                cat = re.search('<cat>(.*)</cat>', ad).group(1)
                 if "location" in query:
                     for op, location in query["location"]:
                         if loc is not location:
