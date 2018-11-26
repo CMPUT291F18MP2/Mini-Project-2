@@ -210,7 +210,6 @@ class AdsDatabase:
                 row = self.price_cursor.next()
             if not search_results:
                 return set()
-            print(search_results)
             results = self.merge_results(results, search_results)
             search_results = set()
             if not results:
@@ -227,6 +226,9 @@ class AdsDatabase:
         results = set()
         search_results = set()
         for op, search in query["date"]:
+            search = search.rjust(12)
+            print(op)
+            print(search)
             if op in ("=", ">", ">="):
                 row = self.dates_cursor.set_range(search.encode("utf-8"))
             else:
@@ -257,9 +259,13 @@ class AdsDatabase:
                 elif op in ("=", "<", "<="):
                     break
                 row = self.dates_cursor.next()
+            if not search_results:
+                return set()
+            print(search_results)
             results = self.merge_results(results, search_results)
+            search_results = set()
             if not results:
-                break
+                return set()
 
         return results
 
