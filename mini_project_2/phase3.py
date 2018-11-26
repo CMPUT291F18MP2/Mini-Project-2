@@ -32,6 +32,7 @@ def parse_date(date):
 
 def parse_price_range(criteria):
     """Returns lower and upper bounds as strings to use as comparisons in Berkeley databases"""
+    num_of_spaces = 12  # See get_price_matches todo
     lower_bounds = None
     lower_bounds_operator = None
     upper_bounds = None
@@ -40,13 +41,13 @@ def parse_price_range(criteria):
         value = int(value_str)
         if op in ("=", "<", "<="):
             if not upper_bounds or int(upper_bounds) > value:
-                upper_bounds = value_str
+                upper_bounds = value_str.rjust(num_of_spaces)
                 upper_bounds_operator = op
             elif upper_bounds is value and op is "<":
                 upper_bounds_operator = op
         if op in ("=", ">", ">="):
             if not lower_bounds or int(lower_bounds) < value:
-                lower_bounds = value_str
+                lower_bounds = value_str.rjust(num_of_spaces)
                 lower_bounds_operator = op
             elif lower_bounds is value and op is ">":
                 lower_bounds_operator = op
@@ -148,7 +149,7 @@ class AdsDatabase:
         can_add = True
         lower_bounds_operator, lower_bounds, upper_bounds_operator, upper_bounds = parse_price_range(query["price"])
         if lower_bounds:
-            row = self.price_cursor.set_range(lower_bounds.encode("utf-8"))
+            row = self.price_cursor.set_range(lower_bounds.encode("utf-8")) # TODO this doesn't work. Add lpadding?
         else:
             row = self.price_cursor.first()
 
