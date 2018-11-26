@@ -18,7 +18,7 @@ mini-project-2
 Requirements
 ============
 
-* Python 3.6+
+* Python 3.5+
 
 
 Overview
