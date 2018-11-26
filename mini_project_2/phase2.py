@@ -88,6 +88,12 @@ def db_load_all():
     db_load(prices_formatted, prices_db, "btree")
 
 
+def phase2():
+    sort_all()
+    format_all()
+    db_load_all()
+
+
 if __name__ == "__main__":
     format_all()
     pass

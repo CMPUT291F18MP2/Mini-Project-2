@@ -3,11 +3,13 @@
 import mini_project_2
 from mini_project_2.input_parser import InputParser
 
+
 def test_validate_input_1():
     ip = InputParser()
     query = "camera"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_2():
     ip = InputParser()
@@ -15,11 +17,13 @@ def test_validate_input_2():
     val = ip.validate_query(query)
     assert val == True
 
+
 def test_validate_input_3():
     ip = InputParser()
     query = "date <= 2018/11/05"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_4():
     ip = InputParser()
@@ -27,11 +31,13 @@ def test_validate_input_4():
     val = ip.validate_query(query)
     assert val == True
 
+
 def test_validate_input_5():
     ip = InputParser()
     query = "price < 20"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_6():
     ip = InputParser()
@@ -39,11 +45,13 @@ def test_validate_input_6():
     val = ip.validate_query(query)
     assert val == True
 
+
 def test_validate_input_7():
     ip = InputParser()
     query = "location=edmonton date=2018/11/07"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_8():
     ip = InputParser()
@@ -51,11 +59,13 @@ def test_validate_input_8():
     val = ip.validate_query(query)
     assert val == True
 
+
 def test_validate_input_9():
     ip = InputParser()
     query = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_10():
     ip = InputParser()
@@ -63,11 +73,13 @@ def test_validate_input_10():
     val = ip.validate_query(query)
     assert val == False
 
+
 def test_validate_input_11():
     ip = InputParser()
     query = r"hello []"
     val = ip.validate_query(query)
     assert val == False
+
 
 def test_validate_input_12():
     ip = InputParser()
@@ -75,11 +87,13 @@ def test_validate_input_12():
     val = ip.validate_query(query)
     assert val == False
 
+
 def test_validate_input_13():
     ip = InputParser()
     query = r"3413"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_14():
     ip = InputParser()
@@ -87,11 +101,13 @@ def test_validate_input_14():
     val = ip.validate_query(query)
     assert val == True
 
+
 def test_validate_input_15():
     ip = InputParser()
     query = r"date=hello"
     val = ip.validate_query(query)
     assert val == False
+
 
 def test_validate_input_16():
     ip = InputParser()
@@ -99,11 +115,13 @@ def test_validate_input_16():
     val = ip.validate_query(query)
     assert val == False
 
+
 def test_validate_input_17():
     ip = InputParser()
     query = r"weeueueeee hello"
     val = ip.validate_query(query)
     assert val == True
+
 
 def test_validate_input_18():
     ip = InputParser()
@@ -111,11 +129,13 @@ def test_validate_input_18():
     val = ip.validate_query(query)
     assert val == False
 
+
 def test_validate_input_19():
     ip = InputParser()
     query = r"50 < price <60"
     val = ip.validate_query(query)
     assert val == False
+
 
 def test_parse_for_date_1():
     ip = InputParser()
@@ -125,6 +145,7 @@ def test_parse_for_date_1():
     assert search_dict == {"date": [(">=", "2018/11/05"), ("<=", "2018/11/07")]}
     assert new_query == r"camera   price > 20 price < 40"
 
+
 def test_parse_for_date_2():
     ip = InputParser()
     query = r"date >= 2018/11/05"
@@ -132,6 +153,7 @@ def test_parse_for_date_2():
     new_query = ip.parse_for_date(query, search_dict)
     assert search_dict == {"date": [(">=", "2018/11/05")]}
     assert new_query == r""
+
 
 def test_parse_for_date_3():
     ip = InputParser()
@@ -141,6 +163,7 @@ def test_parse_for_date_3():
     assert search_dict == {"date": [(">=", "2018/11/05"), ("=", "2025/01/01")]}
     assert new_query == r"camera "
 
+
 def test_parse_for_price_1():
     ip = InputParser()
     query = r"price < 20"
@@ -148,6 +171,7 @@ def test_parse_for_price_1():
     new_query = ip.parse_for_price(query, search_dict)
     assert search_dict == {"price": [("<", "20")]}
     assert new_query == r""
+
 
 def test_parse_for_price_2():
     ip = InputParser()
@@ -157,6 +181,7 @@ def test_parse_for_price_2():
     assert search_dict == {"price": [("<", "20"), ("=", "40")]}
     assert new_query == r" "
 
+
 def test_parse_for_price_3():
     ip = InputParser()
     query = r"price >=420 have you ever heard the tragedy of dark plagueis the wise"
@@ -164,6 +189,7 @@ def test_parse_for_price_3():
     new_query = ip.parse_for_price(query, search_dict)
     assert search_dict == {"price": [("<", "20"), (">=", "420")]}
     assert new_query == r" have you ever heard the tragedy of dark plagueis the wise"
+
 
 def test_parse_for_location_1():
     ip = InputParser()
@@ -173,6 +199,7 @@ def test_parse_for_location_1():
     assert search_dict == {"location": [("=", "edmonton")]}
     assert new_query == r" date=2018/11/07"
 
+
 def test_parse_for_location_2():
     ip = InputParser()
     query = r"location=coruscant location=tatooine"
@@ -180,6 +207,7 @@ def test_parse_for_location_2():
     new_query = ip.parse_for_location(query, search_dict)
     assert search_dict == {"location": [("=", "coruscant"), ("=", "tatooine")]}
     assert new_query == r" "
+
 
 def test_parse_for_location_3():
     ip = InputParser()
@@ -189,6 +217,7 @@ def test_parse_for_location_3():
     assert search_dict == {"location": [("=", "edmonton"), ("=", "coruscant"), ("=", "tatooine")]}
     assert new_query == r" date=2019/11/11 "
 
+
 def test_parse_for_location_4():
     ip = InputParser()
     query = r"date=2019/11/11 location=tatooine"
@@ -197,8 +226,9 @@ def test_parse_for_location_4():
     assert search_dict == {
         "price": [("=", "30")],
         "location": [("=", "tatooine")]
-        }
+    }
     assert new_query == r"date=2019/11/11 "
+
 
 def test_parse_for_category_1():
     ip = InputParser()
@@ -208,6 +238,7 @@ def test_parse_for_category_1():
     assert search_dict == {"category": [("=", "art-collectibles")]}
     assert new_query == r" camera"
 
+
 def test_parse_for_category_2():
     ip = InputParser()
     query = r"cat=not-stories-jedi-would-tell-you camera cat=art-collectibles"
@@ -215,6 +246,7 @@ def test_parse_for_category_2():
     new_query = ip.parse_for_category(query, search_dict)
     assert search_dict == {"category": [("=", "not-stories-jedi-would-tell-you"), ("=", "art-collectibles")]}
     assert new_query == r" camera "
+
 
 def test_parse_for_category_3():
     ip = InputParser()
@@ -226,6 +258,7 @@ def test_parse_for_category_3():
         "category": [("=", "general"), ("=", "kenobi")]}
     assert new_query == r" location=dagobah"
 
+
 def test_parse_for_keyword_1():
     ip = InputParser()
     query = r"camera location=my-house"
@@ -233,6 +266,7 @@ def test_parse_for_keyword_1():
     new_query = ip.parse_for_keyword(query, search_dict)
     assert search_dict == {"keyword": [("=", "camera")]}
     assert new_query == r" location=my-house"
+
 
 def test_parse_for_keyword_2():
     ip = InputParser()
@@ -242,6 +276,7 @@ def test_parse_for_keyword_2():
     assert search_dict == {"keyword": [("%", "camera")]}
     assert new_query == r""
 
+
 def test_parse_for_keyword_3():
     ip = InputParser()
     query = r"midichlorians cat=starwars darth%"
@@ -249,6 +284,7 @@ def test_parse_for_keyword_3():
     new_query = ip.parse_for_keyword(query, search_dict)
     assert search_dict == {"keyword": [("=", "midichlorians"), ("%", "darth")]}
     assert new_query == r" cat=starwars "
+
 
 def test_parse_for_keyword_4():
     ip = InputParser()
@@ -264,6 +300,7 @@ def test_parse_for_keyword_4():
     }
     assert new_query == r"location=deathstar "
 
+
 def test_parse_input_1():
     ip = InputParser()
     query = "camera"
@@ -272,6 +309,7 @@ def test_parse_input_1():
         "keyword": [("=", "camera")]
     }
     assert searches_actual == searches_expected
+
 
 def test_parse_input_2():
     ip = InputParser()
@@ -282,6 +320,7 @@ def test_parse_input_2():
     }
     assert searches_actual == searches_expected
 
+
 def test_parse_input_3():
     ip = InputParser()
     query = "date <= 2018/11/05"
@@ -290,6 +329,7 @@ def test_parse_input_3():
         "date": [("<=", "2018/11/05")]
     }
     assert searches_actual == searches_expected
+
 
 def test_parse_input_4():
     ip = InputParser()
@@ -301,6 +341,7 @@ def test_parse_input_4():
     }
     assert searches_actual == searches_expected
 
+
 def test_parse_input_5():
     ip = InputParser()
     query = "price < 20"
@@ -309,6 +350,7 @@ def test_parse_input_5():
         "price": [("<", "20")]
     }
     assert searches_actual == searches_expected
+
 
 def test_parse_input_6():
     ip = InputParser()
@@ -320,6 +362,7 @@ def test_parse_input_6():
     }
     assert searches_actual == searches_expected
 
+
 def test_parse_input_7():
     ip = InputParser()
     query = "location=edmonton date=2018/11/07"
@@ -329,6 +372,7 @@ def test_parse_input_7():
         "date": [("=", "2018/11/07")]
     }
     assert searches_actual == searches_expected
+
 
 def test_parse_input_8():
     ip = InputParser()
@@ -340,6 +384,7 @@ def test_parse_input_8():
     }
     assert searches_actual == searches_expected
 
+
 def test_parse_input_9():
     ip = InputParser()
     query = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
@@ -350,6 +395,7 @@ def test_parse_input_9():
         "price": [(">", "20"), ("<", "40")]
     }
     assert searches_actual == searches_expected
+
 
 def test_parse_input_10():
     ip = InputParser()
@@ -363,6 +409,7 @@ def test_parse_input_10():
     }
     assert searches_actual == searches_expected
 
+
 def test_parse_input_11():
     ip = InputParser()
     query = "     "
@@ -371,11 +418,13 @@ def test_parse_input_11():
     }
     assert searches_actual == searches_expected
 
+
 def test_output_type_1():
     ip = InputParser()
     user_input = "output=full"
     val = ip.output_type(user_input)
     assert val == "full"
+
 
 def test_output_type_2():
     ip = InputParser()
@@ -383,8 +432,9 @@ def test_output_type_2():
     val = ip.output_type(user_input)
     assert val == "brief"
 
+
 def test_output_type_3():
     ip = InputParser()
     user_input = "camera date>=2018/11/05 date<=2018/11/07 price > 20 price < 40"
     val = ip.output_type(user_input)
-    assert val == None
+    assert val
