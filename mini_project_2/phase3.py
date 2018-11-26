@@ -172,12 +172,12 @@ class AdsDatabase:
             if "location" in query or "category" in query:
                 if "location" in query:
                     for op, location in query["location"]:
-                        if loc is not location:
+                        if loc != location:
                             can_add = False
                             break
                 if "category" in query and can_add:
                     for op, category in query["category"]:
-                        if cat is not category:
+                        if cat != category:
                             can_add = False
                             break
             if can_add:
@@ -221,12 +221,12 @@ class AdsDatabase:
             if "location" in query or "category" in query:
                 if "location" in query:
                     for op, location in query["location"]:
-                        if loc is not location:
+                        if loc != location:
                             can_add = False
                             break
                 if "category" in query and can_add:
                     for op, category in query["category"]:
-                        if cat is not category:
+                        if cat != category:
                             can_add = False
                             break
             if can_add:
@@ -253,12 +253,12 @@ class AdsDatabase:
             cat = re.search('<cat>(.*)</cat>', ad).group(1)
             if "location" in query:
                 for op, location in query["location"]:
-                    if loc is not location:
+                    if loc != location:
                         can_add = False
                         break
             if "category" in query and can_add:
                 for op, category in query["category"]:
-                    if cat is not category:
+                    if cat != category:
                         can_add = False
                         break
             if can_add:
@@ -340,17 +340,12 @@ class AdsDatabase:
                 cat = re.search('<cat>(.*)</cat>', ad).group(1)
                 if "location" in query:
                     for op, location in query["location"]:
-                        if loc is not location:
+                        if loc != location:
                             can_add = False
                             break
                 if "category" in query and can_add:
-                    print("|"+cat+"|")
                     for op, category in query["category"]:
-                        print("|"+category+"|")
-                        print(cat is not category)
-                        print(cat != category)
-                        print(cat == category)
-                        if cat is not category:
+                        if cat != category:
                             can_add = False
                             break
 
