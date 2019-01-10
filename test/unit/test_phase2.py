@@ -34,7 +34,7 @@ terms_db = os.path.join(MINI_PROJECT_2_PATH, "database/te.idx")
 pdates_db = os.path.join(MINI_PROJECT_2_PATH, "database/da.idx")
 prices_db = os.path.join(MINI_PROJECT_2_PATH, "database/pr.idx")
 
-/*
+"""
 def test_sort_ads():
     sort_data(ads_file, ads_file)
     assert open(ads_sorted_file).read() == open(ads_file).read()
@@ -60,9 +60,10 @@ def test_db_load_all():
     # assert open(prices_idx).read() == open(prices_db).read()
     # assert open(pdates_idx).read() == open(pdates_db).read()
     # assert open(terms_idx).read() == open(terms_db).read()
-*/
+
 if __name__ == "__main__":
     test_sort_all()
     test_format_all()
     test_db_load_all()
     pass
+"""
